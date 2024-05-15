@@ -1,14 +1,19 @@
-import { View, Text } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import { Stack, useRouter } from 'expo-router'
+import { Stack } from 'expo-router'
 
-
-export default function _layout() {
+export default function () {
   return (
-    <Stack>
-        <Stack.Screen name='/one'  />
-        <Stack.Screen name='/two' />
-        <Stack.Screen name='/three' />
+    <Stack
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+        <Stack.Screen name='one'  />
+        <Stack.Screen name='three' />
+        <Stack.Screen name='two' />
     </Stack>
   )
 }
+
+const styles = StyleSheet.create({})

@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "template",
-    "slug": "template",
-    "scheme": "template",
+    "name": "Irrigation",
+    "slug": "Irrigation",
+    "scheme": "irrigation",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -32,7 +32,6 @@
       "expo-router"
     ],
     "experiments": {
-      "typeRoutes": true,
       "tsconfigPaths": true
     }
   }

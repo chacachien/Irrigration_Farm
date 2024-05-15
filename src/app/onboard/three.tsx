@@ -1,38 +1,39 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, StyleSheet, Dimensions, Animated } from 'react-native'
-import { Link } from 'expo-router'
-import { Easing } from 'react-native-reanimated'
+import { View, Text, Image, TouchableOpacity, StyleSheet, Dimensions } from 'react-native'
+import { Link, useRouter } from 'expo-router'
 
-import  OnboardImage  from 'components/onboardImage'
+import OnboardImage from 'components/onboardImage'
 import TextOnboard from 'components/onboardText'
 import BlurButton from 'components/button/BlurButton'
 import ActivateButton from 'components/button/ActivateButton'
-import onboard_1 from 'assets/onboard/onboard_1.png'
+import onboard_3 from 'assets/onboard/onboard_3.png'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 const { width, height } = Dimensions.get('screen')
-export default function One({moveToNext}) {
 
-  const title = 'Tưới tiêu thông minh'
-  const description = 'Phân tích đưa ra các giải pháp tưới tiêu tối ưu.'
+export default function Three() {
+    const router = useRouter()
 
-
+	const title = 'Tùy chọn mô hình'
+	const description = 'Tùy chọn mô hình tưới tiêu phù hợp với khu vườn của bạn.'
+    const moveToNext = () => {
+        router.navigate('login')
+    }
 	return (
 		<SafeAreaView style={{ flex: 1 }}>
 			<View style={styles.container}>
-				<OnboardImage image_name={onboard_1} />
+				<OnboardImage image_name={onboard_3} />
 				<View style={styles.textContainer}>
-					<TextOnboard title={title} description={description} position={0} />
+					<TextOnboard title={title} description={description} position={2} />
 					<View style={styles.navigationContainer}>
-						<BlurButton link_to="login" />
-						<ActivateButton text="Tiếp theo" onPress={moveToNext} />
+
+						<ActivateButton  text="Bắt đầu" onPress={moveToNext} />
 					</View>
 				</View>
 			</View>
 		</SafeAreaView>
 	)
 }
-
 
 const borderRadius = width / 2
 
@@ -48,10 +49,12 @@ const styles = StyleSheet.create({
 	navigationContainer: {
 		flex: 1,
 		flexDirection: 'row', // Arrange buttons in a row
+        justifyContent: 'center',
 		alignItems: 'center', // Center buttons vertically
 		marginTop: 20, // Add margin from the text box
-		justifyContent: 'space-between',
+
 		width: '80%',
+
 	},
 	textContainer: {
 		flex: 1,

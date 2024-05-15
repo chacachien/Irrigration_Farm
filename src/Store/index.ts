@@ -12,18 +12,19 @@ import {
 	PURGE,
 	REGISTER,
 } from 'redux-persist'
-import { homeReducers, themeReducers } from './reducers'
+import { homeReducers, themeReducers, onboardReducers  } from './reducers'
 
 const reducers = combineReducers({
 	api: API.reducer,
 	theme: themeReducers,
 	home: homeReducers,
+	onboard: onboardReducers,
 })
 
 const persistConfig = {
 	key: 'root',
 	storage: AsyncStorage,
-	whitelist: ['theme'],
+	whitelist: ['theme', 'onboard'],
 }
 
 const persistedReducer = persistReducer(persistConfig, reducers)

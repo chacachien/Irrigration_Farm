@@ -1,28 +1,26 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, StyleSheet, Dimensions, Animated } from 'react-native'
+import { View, Text, Image, TouchableOpacity, StyleSheet, Dimensions } from 'react-native'
 import { Link } from 'expo-router'
-import { Easing } from 'react-native-reanimated'
 
-import  OnboardImage  from 'components/onboardImage'
+import OnboardImage from 'components/onboardImage'
 import TextOnboard from 'components/onboardText'
 import BlurButton from 'components/button/BlurButton'
 import ActivateButton from 'components/button/ActivateButton'
-import onboard_1 from 'assets/onboard/onboard_1.png'
+import onboard_2 from 'assets/onboard/onboard_2.png'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 const { width, height } = Dimensions.get('screen')
-export default function One({moveToNext}) {
 
-  const title = 'Tưới tiêu thông minh'
-  const description = 'Phân tích đưa ra các giải pháp tưới tiêu tối ưu.'
+export default function Two({moveToNext }) {
+	const title = 'Quản lý tưới tiêu'
+	const description = 'Dễ dàng quản lý với chức năng lập lịch tưới tiêu.'
 
-
-	return (
+return (
 		<SafeAreaView style={{ flex: 1 }}>
 			<View style={styles.container}>
-				<OnboardImage image_name={onboard_1} />
+				<OnboardImage image_name={onboard_2} />
 				<View style={styles.textContainer}>
-					<TextOnboard title={title} description={description} position={0} />
+					<TextOnboard title={title} description={description} position={1} />
 					<View style={styles.navigationContainer}>
 						<BlurButton link_to="login" />
 						<ActivateButton text="Tiếp theo" onPress={moveToNext} />
@@ -30,16 +28,14 @@ export default function One({moveToNext}) {
 				</View>
 			</View>
 		</SafeAreaView>
-	)
+)
 }
 
-
 const borderRadius = width / 2
-
 const styles = StyleSheet.create({
 	container: {
-		width,
-		height,
+        width,
+        height,
 		flex: 1,
 		alignItems: 'center',
 		backgroundColor: '#fff', // changed to white background color
@@ -75,3 +71,4 @@ const styles = StyleSheet.create({
 		elevation: 5,
 	},
 })
+
