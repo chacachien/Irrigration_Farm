@@ -1,12 +1,13 @@
-## Anh đang làm:
-Onboading: done
-Login:
-Register:
-Farm:
-Irrigation:
+### Phát
+- **Onboarding**: Complete
+- **Login**: In Progress
+- **Register**: In Progress
+- **Farm**: In Progress
+- **Irrigation**: In Progress
 
-## Trung 
-Home:
-Weather:
-Notification:
-Setting:
+### Trung
+- **Home**: In Progress
+- **Weather**: In Progress
+- **Notification**: In Progress
+- **Setting**: In Progress
+
