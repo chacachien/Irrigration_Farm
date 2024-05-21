@@ -2,7 +2,7 @@
 	"extends": "expo/tsconfig.base",
 	"compilerOptions": {
 		"strict": true,
-		"target": "ES6",
+		"target": "es2017",
 		"module": "commonjs",
 		"jsx": "react-native",
 		"moduleResolution": "Node",
@@ -13,11 +13,12 @@
 		"baseUrl": ".",
 		"paths": {
 			"components/*": ["./src/components/*"],
-			"assets/*": ["./assets/*"],
+			"@assets/*": ["./assets/*"],
 			"@/*": ["./src/*"],
-			"@/assets/*": ["./assets/*"]
+			"~/*": ["./*"],
+			// "@/assets/*": ["./assets/*"]
 		}
 	},
-	"include": ["**/*.ts", "**/*.tsx", ".expo/type/**/*.ts", ".expo-env.d.ts"],
+	"include": ["**/*.ts", "**/*.tsx", ".expo/type/**/*.ts", ".expo-env.d.ts", "metro.config.js" ],
 	"exclude": ["node_modules"]
 }

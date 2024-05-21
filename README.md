@@ -1,8 +1,8 @@
 ## Anh đang làm:
 Onboading: done
-Login:
-Register:
-Farm:
+Login: 
+Register: 
+Farm: 
 Irrigation:
 
 ## Trung 

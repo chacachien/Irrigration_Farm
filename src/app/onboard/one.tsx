@@ -3,15 +3,15 @@ import { View, Text, Image, TouchableOpacity, StyleSheet, Dimensions, Animated }
 import { Link } from 'expo-router'
 import { Easing } from 'react-native-reanimated'
 
-import  OnboardImage  from 'components/onboardImage'
-import TextOnboard from 'components/onboardText'
-import BlurButton from 'components/button/BlurButton'
-import ActivateButton from 'components/button/ActivateButton'
-import onboard_1 from 'assets/onboard/onboard_1.png'
+import  OnboardImage  from '@/Components/onboardImage'
+import TextOnboard from '@/Components/onboardText'
+import BlurButton from '@/Components/button/BlurButton'
+import ActivateButton from '@/Components/button/ActivateButton'
+import onboard_1 from '~/assets/onboard/onboard_1.png'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 const { width, height } = Dimensions.get('screen')
-export default function One({moveToNext}) {
+export default function One({moveToNext}: {moveToNext: () => void}){
 
   const title = 'Tưới tiêu thông minh'
   const description = 'Phân tích đưa ra các giải pháp tưới tiêu tối ưu.'

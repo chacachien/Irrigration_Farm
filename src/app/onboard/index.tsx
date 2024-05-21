@@ -4,16 +4,19 @@ import { Image, StyleSheet, View, FlatList, Animated } from 'react-native'
 import One from './one' // Assuming these are React components
 import Two from './two'
 import Three from './three'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useDispatch } from 'react-redux'
+import { clearInput } from '@/Store/reducers/register'
 
 const itemLists = [One, Two, Three]
 
 const Slider = () => {
 
   const [index, setIndex] = useState(0)
-  const flatListRef = useRef(null)
+const flatListRef = useRef<FlatList<any>>(null)
   const scrollX = useRef(new Animated.Value(0)).current
-
-	const handleOnScroll = (event) => {
+	const dispatch = useDispatch()
+	const handleOnScroll = (event: any) => {
 		Animated.event(
 			[
 				{
@@ -30,7 +33,7 @@ const Slider = () => {
 		)(event)
 	}
 
-	const handleOnViewableItemsChanged = useRef(({ viewableItems }) => {
+	const handleOnViewableItemsChanged = useRef(({ viewableItems }: any) => {
 		console.log('viewableItems', viewableItems);
 		setIndex(viewableItems[0].index)
 	}).current
@@ -39,15 +42,20 @@ const Slider = () => {
 		itemVisiblePercentThreshold: 50,
 	}).current
 
-    const renderItem = ({ item: Component }) => <Component moveToNext={moveToNext} />
-    const moveToNext = () => {
-        console.log(index)  
-        if (index < itemLists.length -1) {
-            flatListRef.current.scrollToIndex({index: index +1})
-            // setIndex(viewableItems[0].index)
-        }
-        console.log(index)            
-    }
+	const renderItem = ({ item: Component }: { item: React.ComponentType<any> }) => <Component moveToNext={moveToNext} />
+	const moveToNext = async () => {
+		console.log(index)  
+		if (index < itemLists.length -1) {
+			flatListRef.current?.scrollToIndex({index: index +1})
+			// setIndex(viewableItems[0].index)
+		}
+		// dispatch(clearInput())
+		// await AsyncStorage.clear().then(() => {
+		// 	console.log('done')
+		// })
+
+		console.log(index)            
+	}
     //const renderItem = ({ item: Component }) => <Component />
 	return (
 		<View style={styles.container}>

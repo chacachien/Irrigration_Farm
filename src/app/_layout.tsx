@@ -65,9 +65,13 @@
 // 	)
 // }
 
+if (__DEV__) {
+	console.log('Reactotron enabled')
+	require('../../ReactotronConfig')
+}
 import { View, Text, Button } from 'react-native'
 import React from 'react'
-import { Stack, useRouter } from 'expo-router'
+import { Stack, useRouter, Redirect } from 'expo-router'
 import { NativeBaseProvider } from 'native-base'
 import { Provider, useSelector } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
@@ -87,25 +91,29 @@ function Providers({ children }: { children: React.ReactNode }) {
 // RootLayout component that uses Redux state
 function RootLayout() {
 	const router = useRouter()
-
 	const onboarding = useSelector((state: any) => state.onboard.completed)
-	const initialRoute = onboarding ? '(tabs)' : 'onboard'
+	const token = useSelector((state: any) => state.auth.token)
 
 	React.useEffect(() => {
-		// Navigate to the initial route after the component is mounted
-		router.push(initialRoute)
-	}, [initialRoute, router])
+		// Determine the initial route based on onboarding and login status
+		if (!onboarding) {
+			router.push('onboard')
+		} else if (!token) {
+			router.push('login')
+		} else {
+			router.push('(tabs)')
+		}
+	}, [onboarding, token, router])
+
+	// React.useEffect(() => {
+	// 	// Navigate to the initial route after the component is mounted
+	// 	router.push(initialRoute)
+	// }, [initialRoute, router])
 
 	return (
 		<Stack
 			screenOptions={{
-				headerStyle: {
-					backgroundColor: '#f4511e',
-				},
-				headerTintColor: '#fff',
-				headerTitleStyle: {
-					fontWeight: 'bold',
-				},
+				headerShown: false,
 			}}
 		>
 			<Stack.Screen
@@ -117,12 +125,14 @@ function RootLayout() {
 			/>
 			<Stack.Screen name="login/index" options={{ title: 'Login' }} />
 			<Stack.Screen name="[missing]" options={{ title: '404' }} />
+
 			<Stack.Screen
 				name="(tabs)"
 				options={{
 					headerShown: false,
 				}}
 			/>
+
 			<Stack.Screen name="onboard" options={{ headerShown: false }} />
 		</Stack>
 	)

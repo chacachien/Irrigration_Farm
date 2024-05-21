@@ -2,16 +2,16 @@ import React from 'react'
 import { View, Text, Image, TouchableOpacity, StyleSheet, Dimensions } from 'react-native'
 import { Link } from 'expo-router'
 
-import OnboardImage from 'components/onboardImage'
-import TextOnboard from 'components/onboardText'
-import BlurButton from 'components/button/BlurButton'
-import ActivateButton from 'components/button/ActivateButton'
+import OnboardImage from '@/Components/onboardImage'
+import TextOnboard from '@/Components/onboardText'
+import BlurButton from '@/Components/button/BlurButton'
+import ActivateButton from '@/Components/button/ActivateButton'
 import onboard_2 from 'assets/onboard/onboard_2.png'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 const { width, height } = Dimensions.get('screen')
 
-export default function Two({moveToNext }) {
+export default function Two({moveToNext }: {moveToNext: () => void}){
 	const title = 'Quản lý tưới tiêu'
 	const description = 'Dễ dàng quản lý với chức năng lập lịch tưới tiêu.'
 

@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
 		borderRadius: 5, // Rounded corners for the button
 		paddingHorizontal: 15, // Padding horizontally within the button
 		paddingVertical: 10, // Padding vertically within the button
+
 	},
 	nextButtonText: {
 		color: '#fff', // White text color for the next button
