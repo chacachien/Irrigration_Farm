@@ -1,41 +1,40 @@
 import React from 'react'
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
-
+import { iconMap } from './iconhandle'
 interface FarmItemProps {
 	name: string
-	lastWatered: string
+
 	type: string
-	waterLevel: string
+
 	icon: any
 	onPress: any
 	onWeatherPress: () => void
 }
 
+
 const FarmItem: React.FC<FarmItemProps> = ({
 	name,
-	lastWatered,
 	type,
-	waterLevel,
 	icon,
 	onPress,
 	onWeatherPress,
 }) => {
+
 	return (
 		<TouchableOpacity onPress={onPress}>
-		<View style={styles.container} >
-			<Image source={icon} style={styles.icon} />
-			<View style={styles.infoContainer}>
-				<Text style={styles.name}>{name}</Text>
-				<Text style={styles.details}>Lần gần nhất tưới: {lastWatered}</Text>
-				<Text style={styles.details}>Phân loại: {type}</Text>
+			<View style={styles.container}>
+				<Image source={iconMap[icon]} style={styles.icon} />
+				<View style={styles.infoContainer}>
+					<Text style={styles.name}>{name}</Text>
+					<Text style={styles.details}>Phân loại: {type}</Text>
+				</View>
+				<View style={styles.waterContainer}>
+
+					<TouchableOpacity style={styles.weatherButton} onPress={onWeatherPress}>
+						<Text style={styles.weatherButtonText}>Thời tiết</Text>
+					</TouchableOpacity>
+				</View>
 			</View>
-			<View style={styles.waterContainer}>
-				<Text style={styles.waterLevel}>{waterLevel}</Text>
-				<TouchableOpacity style={styles.weatherButton} onPress={onWeatherPress}>
-					<Text style={styles.weatherButtonText}>Thời tiết</Text>
-				</TouchableOpacity>
-			</View>
-		</View>
 		</TouchableOpacity>
 	)
 }

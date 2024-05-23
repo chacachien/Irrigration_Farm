@@ -19,6 +19,8 @@
 			// "@/assets/*": ["./assets/*"]
 		}
 	},
-	"include": ["**/*.ts", "**/*.tsx", ".expo/type/**/*.ts", ".expo-env.d.ts", "metro.config.js" ],
+	"tsx": "react-tsx",
+	"jsx": "react-jsx",
+	"include": ["**/*.ts", "**/*.tsx", ".expo/type/**/*.ts", ".expo-env.d.ts", "metro.config.js", "src/**/*.ts", "src/**/*.tsx","*.ts", "*.tsx"],
 	"exclude": ["node_modules"]
 }

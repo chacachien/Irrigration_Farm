@@ -1,48 +1,64 @@
-import React from 'react'
-import { View, Text, StyleSheet, FlatList } from 'react-native'
+import React, { useEffect } from 'react'
+import { View, Text, StyleSheet, FlatList, RefreshControl, ScrollView } from 'react-native'
 import { useDispatch } from 'react-redux'
 import { useRouter } from 'expo-router'
 import { setLogout } from '@/Store/reducers/auth'
 import FarmItem from '@/Components/farmItem'
+import AddButton from '@/Components/button/AddButton'
+import { useGetFarmsQuery } from '@/Services/farm'
 
-const farms = [
-	{
-		id: '1',
-		name: 'Trại bưởi Nha Trang',
-		lastWatered: '2 tiếng trước',
-		type: 'Tĩnh',
-		waterLevel: '80%',
-		icon: require('~/assets/strawberry.png'),
-	},
-	{
-		id: '2',
-		name: 'Trại dâu Đà Lạt',
-		lastWatered: '2 tiếng trước',
-		type: 'Tĩnh',
-		waterLevel: '70%',
-		icon: require('~/assets/coconut.png'),
-	},
-	{
-		id: '3',
-		name: 'Trại nhãn Kontum',
-		lastWatered: '2 tiếng trước',
-		type: 'Tĩnh',
-		waterLevel: '50%',
-		icon: require('~/assets/strawberry.png'),
-	},
-	{
-		id: '4',
-		name: 'Trại dừa Bến Tre',
-		lastWatered: '2 tiếng trước',
-		type: 'Động',
-		waterLevel: '90%',
-		icon: require('~/assets/coconut.png'),
-	},
-]
+
+
+// const farms = [
+// 	{
+// 		id: '1',
+// 		name: 'Trại bưởi Nha Trang',
+// 		lastWatered: '2 tiếng trước',
+// 		type: 'Tĩnh',
+// 		waterLevel: '80%',
+// 		icon: require('~/assets/strawberry.png'),
+// 	},
+// 	{
+// 		id: '2',
+// 		name: 'Trại dâu Đà Lạt',
+// 		lastWatered: '2 tiếng trước',
+// 		type: 'Tĩnh',
+// 		waterLevel: '70%',
+// 		icon: require('~/assets/coconut.png'),
+// 	},
+// 	{
+// 		id: '3',
+// 		name: 'Trại nhãn Kontum',
+// 		lastWatered: '2 tiếng trước',
+// 		type: 'Tĩnh',
+// 		waterLevel: '50%',
+// 		icon: require('~/assets/strawberry.png'),
+// 	},
+// 	{
+// 		id: '4',
+// 		name: 'Trại dừa Bến Tre',
+// 		lastWatered: '2 tiếng trước',
+// 		type: 'Động',
+// 		waterLevel: '90%',
+// 		icon: require('~/assets/coconut.png'),
+// 	},
+// ]
 
 const Farm: React.FC = () => {
-	const router = useRouter()
+  const router = useRouter()
 	const dispatch = useDispatch()
+	const { data, isFetching, isLoading, refetch } = useGetFarmsQuery({})
+	const [refreshing, setRefreshing] = React.useState(false)
+	
+	const onRefresh = React.useCallback(async () => {
+		setRefreshing(true)
+		try {
+			await refetch() // Re-fetch the data
+			console.log('REFRESHING....')
+		} finally {
+			setRefreshing(false)
+		}
+	}, [refetch])
 
 	const handleLogout = () => {
 		dispatch(setLogout())
@@ -57,27 +73,51 @@ const Farm: React.FC = () => {
 		console.log("Farm id: ", id)
 		router.push(`./farm/${id}`)
 	}
+	const handleAddFarm = () => {
+		router.push('./farm/(newFarm)')
+	}
 
 
 	return (
-		<View style={styles.container}>
-			<FlatList
-				data={farms}
-				keyExtractor={(item) => item.id}
-				renderItem={({ item }) => (
-					<FarmItem
-						name={item.name}
-						lastWatered={item.lastWatered}
-						type={item.type}
-						waterLevel={item.waterLevel}
-						icon={item.icon}
-						onPress={() => handlePress(item.id)} 
-						onWeatherPress={() => handleWeatherPress(item.id)}
-					/>
-				)}
-
-			/>
-		</View>
+		<ScrollView
+			contentContainerStyle={styles.container}
+			refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+		>
+			{isLoading ? (
+				<Text>Loading...</Text>
+			) : (
+				// <FlatList
+				// 	data={data}
+				// 	keyExtractor={(item) => item.id}
+				// 	renderItem={({ item }) => (
+				// 		<FarmItem
+				// 			name={item.name}
+				// 			lastWatered={item.lastWatered}
+				// 			type={item.type}
+				// 			waterLevel={item.waterLevel}
+				// 			icon={item.icon}
+				// 			onPress={() => handlePress(item.id)}
+				// 			onWeatherPress={() => handleWeatherPress(item.id)}
+				// 		/>
+				// 	)}
+				// />
+				<View>
+					{data.farms?.map((item: any) => (
+							<FarmItem
+								key={item.id}
+								name={item.name}
+								type={item.type}
+								icon={item.type}
+								onPress={() => handlePress(item.id)}
+								onWeatherPress={() => handleWeatherPress(item.id)}
+							/>
+					))}
+				</View>
+			)}
+			<View style={styles.addButton}>
+				<AddButton onPress={() => handleAddFarm()} />
+			</View>
+		</ScrollView>
 	)
 }
 
@@ -92,6 +132,11 @@ const styles = StyleSheet.create({
 		fontWeight: 'bold',
 		marginBottom: 20,
 		textAlign: 'center',
+	},
+	addButton: {
+		position: 'absolute',
+		bottom: 0,
+		right: 0,
 	},
 })
 

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { View, Text, Button, ActivityIndicator, StyleSheet, TouchableOpacity } from 'react-native'
 import { useFormikContext } from 'formik'
 import theme from '@/Theme'
+import { useSelector } from 'react-redux'
 
 type NavigationProps = {
 	maxSteps: number
@@ -13,12 +14,12 @@ type NavigationProps = {
 
 /** Will need to be a child of a Formik component to have access to Formik context */
 const Navigation = ({ maxSteps, currentIndex, onClickNext, onClickBack }: NavigationProps) => {
-	
+	const isSubmitting = useSelector((state: any) => state.register.loading)
     const isFirstStep = currentIndex === 0
 	const isLastStep = currentIndex === maxSteps - 1
 
 	// Grab what we need from formik without prop-drilling
-	const { validateForm, handleSubmit, isSubmitting, isValid } = useFormikContext<any>()
+	const { validateForm, handleSubmit, isValid } = useFormikContext<any>()
 
 	// Will run form.validateForm() when the currentIndex prop is changed
 	useEffect(() => {

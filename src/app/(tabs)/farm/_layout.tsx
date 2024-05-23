@@ -7,8 +7,6 @@ export default function FarmLayout() {
 
 	return (
 		<Stack screenOptions={{ 
-
-
 			// custom button back on header
 			headerLeft: () => (
 				<Button
@@ -21,11 +19,15 @@ export default function FarmLayout() {
 
 			<Stack.Screen name="index" options={{ title: 'Nông trại' }} />
 			<Stack.Screen name="weather" options={{ title: 'Thời tiết' }} />
-			<Stack.Screen name='farmDetail' options={{ title: 'Nông trại' }} />
 			<Stack.Screen name="[id]" options={{
 				title: 'Nông trại',
 			}}
 			/>
+			<Stack.Screen name="(newFarm)" options={{ title: 'Tạo nông trại', 
+				headerShown: false,
+			}}
+			/>
+			
  		</Stack>
 	)
 }

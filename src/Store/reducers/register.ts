@@ -1,13 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { RegisterForm } from '@/Helper/types/registerForm'
+import { RegisterForm } from '@/Types/registerForm'
 
 // Create initial state of form
 const initialState: RegisterForm = {
-	type_res: 'phone',
-	value: '000',
-	username: 'Nguyen A',
-    gender: 'Nam',
+	type_res: '',
+	value: '',
+	username: '',
+    gender: '',
 	password: '',
 	confirmPassword: '',
 	loading: false,
@@ -58,6 +58,10 @@ const slice = createSlice({
 		decreaseStep: (state) => {
 			if (state.step > 0) state.step -= 1
 		},
+		setIsSubmitting: (state, action: PayloadAction<boolean>) => {
+			state.loading = action.payload
+		}
+
 	},
 })
 
@@ -68,6 +72,7 @@ export const {
 	submitRegister,
 	submitRegisterSuccess,
 	submitRegisterFailure,
-    clearInput
+    clearInput,
+	setIsSubmitting
 } = slice.actions
 export const registerReducers = slice.reducer

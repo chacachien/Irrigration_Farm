@@ -38,19 +38,19 @@ export default function Login() {
 			const result: any= await login({
 				value: email.value,
 				password: password.value,
-			})
+			}).unwrap()
+			console.log('RESULT: ', result)
 
-			if (result.data) {
-				console.log('RESPONSE OF LOGIN: ', result.data)
-				dispatch(setCredentials(result.data))
-
+			if (result) {
+				console.log('RESPONSE OF LOGIN: ', result)
+				dispatch(setCredentials(result))
 				router.push('(tabs)')
 			} else {
-				console.log('ERROR: ', result.error.data.detail)
+				console.log('ERROR: ', result.error)
 				setPopupVisible(true)
 			}
 		} catch (err) {
-			console.log(err)
+			console.log("ERR: ", err)
 		}
 	}
 

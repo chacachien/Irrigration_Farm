@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useRouter } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Logo from '@/Components/logo'
@@ -10,16 +10,30 @@ import { Formik, FormikProps, FormikValues } from 'formik'
 import { useSelector, useDispatch } from 'react-redux'
 import { genarateSteps, getStepSchema } from './steps/index'
 
-import { increaseStep, decreaseStep } from '@/Store/reducers/register'
+import { increaseStep, decreaseStep, clearInput } from '@/Store/reducers/register'
 import { setInput } from '@/Store/reducers/register'
 
 import Popup from '@/Components/popup'
 import SecondaryButton from '@/Components/secondaryButton'
 import { usePostFarmerMutation } from '@/Services'
-import { Farmer } from '@/Helper/types/registerForm'
+import { Farmer } from '@/Types/registerForm'
+import { setIsSubmitting } from '@/Store/reducers/register'
 
+const popupcontent ={
+	success: {
+		title: "Đăng ký tài khoản thành công",
+		content: "Chúc mừng bạn đã đăng ký tài khoản thành công",
+		button: "Tiếp tục"
+	},
+	fail: {
+		title: "Đăng ký tài khoản thất bại",
+		content: "Đã có lỗi xảy ra, vui lòng thử lại",
+		button: "Thử lại"
+	}
+}
 export default function Register() {
 	const [popupVisible, setPopupVisible] = useState(false)
+	const [popupText, setPopupText] = useState(popupcontent.success)
 	const [steps] = useState(genarateSteps())
 	const register = useSelector((state: any) => state.register)
 	const currentIndex = useSelector((state: any) => state.register.step)
@@ -27,16 +41,16 @@ export default function Register() {
 	const [postFarmer, postFarmerResult] = usePostFarmerMutation()
 
 	const goNext = async (values: any) => {
-		
 			dispatch(setInput(values))
 			dispatch(increaseStep())
 		if (currentIndex === steps.length - 1) {
+			console.log("SUBMIT: ", register)
 			dispatch(decreaseStep())
-			setTimeout(() => {
-				handleSubmit()
-			}, 1000)
+			dispatch(setIsSubmitting(true))
+			handleSubmit(values)
 		}
 	}
+
 	const goBack = () => {
 		dispatch(decreaseStep())
 	}
@@ -55,8 +69,7 @@ export default function Register() {
 		return <StepComponent {...commonProps} />
 	}
 
-	const handleSubmit = async () => {
-
+	const handleSubmit = async (values: any) => {
 		// handle submit here: call api to register user
 		//create pop up success message
 		// redirect to login screen
@@ -65,18 +78,45 @@ export default function Register() {
 			value: register.value,
 			username: register.username,
 			gender: register.gender,
-			password: register.password,
-			password2: register.confirmPassword,
+			password: values.password,
+			password2: values.confirmPassword,
 		}
 		console.log('farmer: ', farmer)
-		const result = await postFarmer(farmer).unwrap()
-		console.log('submited: ', result)
+		// try
+		// 	const result = await postFarmer(farmer).unwrap()
+		// //handle err
+		// console.log('result: ', result)
+		// if (result.status !==200) {
+		// 	console.log('error: ', result.error)
+		// 	setPopupText(popupcontent.fail)
+		// }
+		// setPopupVisible(true)
+		// dispatch(setIsSubmitting(false))
+		try {
+			const response = await postFarmer(farmer).unwrap()
+
+			console.log('response: ', postFarmerResult)
+			if (response) {
+				console.log('Tạo tài khoản thành công: ', response)
+			}
+		} catch (err) {
+			console.log('error: ', err)
+			setPopupText(popupcontent.fail)
+		}
 		setPopupVisible(true)
+		dispatch(setIsSubmitting(false))
 	}
 
 	const handlePopup = () => {
 		setPopupVisible(false)
-		router.push('login')
+		dispatch(clearInput())
+		if (popupText.title === "Đăng ký tài khoản thành công"){
+			router.push('login')
+		} else{
+			router.push('register')
+		}
+		
+
 	}
 
 	return (
@@ -92,7 +132,7 @@ export default function Register() {
 				<Formik
 					initialValues={{}} // this is the initial values of the form
 					validationSchema={getStepSchema(currentIndex, steps)}
-					onSubmit={handleSubmit}
+					onSubmit={() => console.log('submit')}
 					validateOnBlur
 					validateOnChange
 					validateOnMount
@@ -122,13 +162,14 @@ export default function Register() {
 				<View style={styles.popupContainer}>
 					<Popup
 						visible={popupVisible}
-						type="success"
-						text="Đăng ký tài thành công"
-						buttonText="Tiếp tục"
+						type={popupText.title}
+						text={popupText.content}
+						buttonText={popupText.button}
 						onPress={handlePopup}
 					/>
 				</View>
 			)}
+
 		</SafeAreaView>
 	)
 }

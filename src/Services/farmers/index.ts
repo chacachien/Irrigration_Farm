@@ -1,6 +1,6 @@
 import { API } from '../base'
-import {RegisterForm, Farmer} from '@/Helper/types/registerForm'
-import { LoginForm, Credentials } from '@/Helper/types/loginType'
+import {RegisterForm, Farmer} from '@/Types/registerForm'
+import { LoginForm, Credentials } from '@/Types/loginType'
 
 
 export const farmerApi = API.injectEndpoints({
