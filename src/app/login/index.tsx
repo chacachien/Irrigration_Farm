@@ -115,7 +115,7 @@ export default function Login() {
 					<TextButton title="Quên mật khẩu?" onPress={() => handleForgotPassword()} />
 				</View>
 
-				<PrimaryButton title="Đăng nhập" onPress={_onLoginPressed} />
+				<PrimaryButton title="Đăng nhập" onPress={() => { router.navigate('(tabs)') }} />
 				<View style={styles.continuePhone}>
 					<TextButton title="Tiếp tục với số điện thoại" onPress={() => handleChangeType()} />
 				</View>

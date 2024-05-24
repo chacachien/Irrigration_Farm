@@ -23,10 +23,10 @@ import { farmerApi } from '@/Services/farmers'
 import reactotron from '../../ReactotronConfig'
 import { NativeModules } from 'react-native'
 
-if (__DEV__) {
-	console.log('Setting isDebuggingRemotely to true')
-	NativeModules.DevSettings.setIsDebuggingRemotely(true)
-}
+// if (__DEV__) {
+// 	console.log('Setting isDebuggingRemotely to true')
+// 	NativeModules.DevSettings.setIsDebuggingRemotely(true)
+// }
 
 const reducers = combineReducers({
 	theme: themeReducers,

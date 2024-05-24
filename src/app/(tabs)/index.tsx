@@ -5,12 +5,12 @@ import { Redirect } from 'expo-router'
 
 
 export default function Home() {
-  const user =  AsyncStorage.getItem('user')
-  if (user) {
-    console.log('user', user)
-  } else{
-    return <Redirect href = "login" />
-  }
+  // const user =  AsyncStorage.getItem('user')
+  // if (user) {
+  //   console.log('user', user)
+  // } else{
+  //   return <Redirect href = "login" />
+  // }
 
   return (
     <View>

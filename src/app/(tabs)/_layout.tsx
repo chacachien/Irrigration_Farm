@@ -7,10 +7,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useSelector } from 'react-redux'
 
 export default function _layout() {
-	const user = useSelector((state: any) => state.auth.user)
-	if (!user) {
-		return <Redirect href="login" />
-	}
+	// const user = useSelector((state: any) => state.auth.user)
+	// if (!user) {
+	// 	return <Redirect href="login" />
+	// }
 	
 	return (
 		<Tabs screenOptions={{ tabBarActiveTintColor: 'blue', 
@@ -35,6 +35,7 @@ export default function _layout() {
                 options = {{
                     title: 'Thông báo',
                     tabBarIcon: ({ color }) => <FontAwesome size={28} name="bell" color={color} />,
+					headerShown: true
                 }}
             />
 
