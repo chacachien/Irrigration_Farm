@@ -2,7 +2,6 @@ import React from 'react'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 
 import { Redirect, Tabs } from 'expo-router'
-import Tab from './settings'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useSelector } from 'react-redux'
 
