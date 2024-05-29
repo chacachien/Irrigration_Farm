@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Touchable, TouchableOpacity, Text, View, StyleSheet } from 'react-native';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
@@ -60,6 +60,7 @@ const SettingItem: React.FC<SettingItemProps> = ({
     underlined,
     onPress
 }) => {
+    const [value, setValue] = useState(false);
     return (
         <TouchableOpacity onPress={ onPress }>
             <View style={ underlined ? [styles.mainItemContainer, { borderBottomColor: 	'#F5F5F5', borderBottomWidth: 1 }] : styles.mainItemContainer }>
@@ -73,11 +74,11 @@ const SettingItem: React.FC<SettingItemProps> = ({
                         title
                     }
                 </Text>
-                { icon != 'dark' ? <Text><AntDesign name='right' size={21} color='grey' /></Text> : <ToggleSwitch isOn={ false }
+                { icon != 'dark' ? <Text><AntDesign name='right' size={21} color='grey' /></Text> : <ToggleSwitch isOn={ value }
                                                                                                                    onColor='black'
                                                                                                                    offColor='#d3d3d3'
                                                                                                                    size='small'
-                                                                                                                   onToggle={(isOn => console.log("changed to : ", isOn ))} /> }
+                                                                                                                   onToggle={(() => setValue(!value) )} /> }
             </View>
         </TouchableOpacity>
     )
