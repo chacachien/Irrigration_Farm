@@ -17,17 +17,13 @@ Welcome to the Irrigation Mobile App! This application is designed to help users
 
 ## Features
 
-- **Automated Irrigation Scheduling:**
-  - Set up automatic schedules for watering different zones.
+- **Get Irrigation Scheduling:**
+  - Set up schedules for watering different zones.
   - Customize schedules based on plant types, weather conditions, and soil moisture levels.
 
 - **Real-Time Monitoring:**
   - Monitor soil moisture levels, weather forecasts, and water usage in real-time.
   - Receive notifications and alerts for system statuses and abnormalities.
-
-- **Manual Control:**
-  - Manually start or stop irrigation for specific zones directly from the app.
-  - Override automatic schedules when necessary.
 
 - **User-Friendly Interface:**
   - Intuitive design with easy navigation and control.
