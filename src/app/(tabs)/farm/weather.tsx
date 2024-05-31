@@ -100,7 +100,7 @@ export default function weather() {
         {
           hourlyForecast.map((item, index) => {
             return (
-              <WeatherHourlyItem time={item.time} weatherIconName={item.weatherName} temp={item.temp} />
+              <WeatherHourlyItem time={item.time} weatherIconName={item.weatherName} temp={item.temp} key={index} />
             )
           })
         }
@@ -110,7 +110,7 @@ export default function weather() {
         {
           dailyForecast.map((item, index) => {
             return (
-              <WeatherDailyItem time={item.time} weatherIconName={item.weatherName} temp={item.temp} />
+              <WeatherDailyItem time={item.time} weatherIconName={item.weatherName} temp={item.temp} key={index} />
             )
           })
         }
