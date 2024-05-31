@@ -1,15 +1,12 @@
-// create a select box component (between phone or email)
-// use step schema to validate the form
-
-import React, { memo, useEffect, useState } from 'react'
-import { View, StyleSheet, Text } from 'react-native'
-import { getInputProps } from '@/Helper/utils'
-import { FormikProps, FormikValues } from 'formik'
-import { useSelector, useDispatch } from 'react-redux'
-
-import theme from '@/Theme'
+// UI
+import React, { memo, useEffect } from 'react'
+import { View, StyleSheet } from 'react-native'
 import TextInput from '@/Components/textInput'
-import { setFarmInput } from '@/Store/reducers'
+
+// DATA
+import { getInputProps } from '@/Helper/utils'
+import { FormikProps, FormikValues, useFormikContext } from 'formik'
+import { useSelector, useDispatch } from 'react-redux'
 
 type Props = {
 	form: FormikProps<FormikValues>
@@ -17,29 +14,26 @@ type Props = {
 }
 
 const FirstStep = ({ form, name }: Props) => {
-	const farm = useSelector((state: any) => state.farm)
-
-	const logMovies = async () => {
-		console.log('You can make an API call when the modal opens.')
-	}
-	const dispatch = useDispatch()
+	const name_farm = useSelector((state: any) => state.farm.name)
+	const { setFieldValue, errors } = useFormikContext()
 
 	useEffect(() => {
-
-		form.values.name = farm.name
-		console.log('form: ', form.values)
+		// Set the initial value for 'name' to 'name_farm' if not already set
+		if (form.values.name !== name_farm) {
+			setFieldValue('name', name_farm)
+		}
 	}, [])
-
-
 	return (
 		<View style={styles.container}>
 			<TextInput
 				{...getInputProps('name', form)}
 				label="Tên nông trại"
-				placeholder="Nhập tên nông trại"
-				value={form.values.name} 
+				placeholder="Nhập tên nông  trại"
+				value={form.values.name}
 				errorText={form.errors.value as string}
-				
+				onChangeText={(text) => {
+					form.setFieldValue('name', text)
+				}}
 			/>
 		</View>
 	)

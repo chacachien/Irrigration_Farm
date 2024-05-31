@@ -27,6 +27,7 @@ export default function FarmLayout() {
 				headerShown: false,
 			}}
 			/>
+			<Stack.Screen name="edit" options={{ title: 'Chỉnh sửa nông trại' }} />
 			
  		</Stack>
 	)

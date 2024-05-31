@@ -39,11 +39,15 @@ export const getInputProps = (name: string, formik: FormikProps<FormikValues>) =
 
 export const getToken = async () => {
 	try {
-		const jsonValue = await AsyncStorage.getItem('user');
+		const jsonValue = await AsyncStorage.getItem('user')
+		console.log('jsonValue:', jsonValue); // Log the jsonValue to ensure it's correct
 		if (jsonValue !== null) {
 			const userData = JSON.parse(jsonValue);
 			console.log('token:', userData.token); // Log the token to ensure it's correct
 			return userData.token; // Return the token directly
+		} else {
+			console.log('Token not found');
+			return null;
 		}
 	} catch (error) {
 		console.error('Failed to fetch user data from storage', error);

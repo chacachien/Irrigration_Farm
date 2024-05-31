@@ -50,10 +50,20 @@ export const farmApi = API.injectEndpoints({
                 method: 'GET',
             }),
         }),
+		// put method
+		updateFarm: build.mutation({
+			query: (body) => {
+				return {
+					url: '/farms/',
+					method: 'PUT',
+					body
+				}
+			}
+		}),
 
 	}),
 	overrideExisting: true,
 })
 
 
-export const { useCreateFarmMutation, useGetFarmsQuery, useGetFarmQuery} = farmApi
+export const { useCreateFarmMutation, useGetFarmsQuery, useGetFarmQuery, useUpdateFarmMutation} = farmApi

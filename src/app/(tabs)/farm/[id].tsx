@@ -1,35 +1,34 @@
-//get the dynamic id of farm
+// UI
+import React, { useCallback } from 'react'
+import { View, Text, StyleSheet, Image, ScrollView } from 'react-native'
+import theme from '@/Theme'
+import ActivateButton from '@/Components/button/activateButton'
+import DataTableIrrigation from '@/Components/dataTable'
+import DetailRow from '@/Components/detailRow'
 
-import { useLocalSearchParams } from 'expo-router'
-// FarmDetail.tsx
-import React from 'react'
-import { View, Text, StyleSheet, Button, Image, ScrollView } from 'react-native'
-import { RouteProp, useRoute } from '@react-navigation/native'
-import  theme from '@/Theme'
-import ActivateButton from '@/Components/button/ActivateButton'
+
+// DATA
+import { router, useLocalSearchParams } from 'expo-router'
 import { useGetFarmQuery } from '@/Services/farm'
 import { formatDate } from '@/Helper/utils'
-import {options } from '@/Types/plantation'
-import DataTableIrrigation from '@/Components/dataTable'
+import { options } from '@/Types/plantation'
+import { setFarmInput } from '@/Store/reducers'
+import { useDispatch } from 'react-redux'
+import { useFocusEffect } from '@react-navigation/native'
 
 
-type RootStackParamList = {
-	FarmDetail: {
-		name: string
-		plantingDate: string
-		type: string
-		area: string
-		address: string
-		irrigationPlan: string
-	}
-}
 
-type FarmDetailRouteProp = RouteProp<RootStackParamList, 'FarmDetail'>
 
 const FarmDetail: React.FC = () => {
 	const { id } = useLocalSearchParams()
-
 	const { data, isFetching, isLoading, refetch } = useGetFarmQuery({ id: id?.toString() })
+	const dispatch = useDispatch()
+	useFocusEffect(
+			useCallback(() => {
+				refetch()
+			}, [refetch]),
+		)
+
 
 	if (isFetching || isLoading) {
 		return (
@@ -40,26 +39,10 @@ const FarmDetail: React.FC = () => {
 	}
 	const farmDetail = data?.farms[0]
 
-	console.log('farmDetail: ', farmDetail)
-	// convert script from string to json
-const script = JSON.parse(farmDetail?.script, (key, value) => {
-	// Check if the current key is 'irrigation_instructions'
-	if (key === 'irrigation_instructions') {
-		// Parse each instruction object
-		console.log('value: ', value)
-	}
-	return value
-})
-	console.log('new script: ', script.irrigation_schedule.irrigation_instructions)
-	const irrigationSchedule = script.irrigation_schedule.irrigation_instructions
-	// const farmDetail = {
-	// 	name: 'Nông trại 1',
-	// 	plantingDate: '01/01/2021',
-	// 	type: 'Mango',
-	// 	area: '1000 m2',
-	// 	address: '123 Đường ABC, Quận XYZ, TP HCM',
-	// 	irrigationPlan: 'Kịch bản tưới 1',
-	// }
+	const script = JSON.parse(farmDetail?.script, (key, value) => {
+		return value
+	})
+
 	if (!farmDetail) {
 		return (
 			<View>
@@ -67,10 +50,29 @@ const script = JSON.parse(farmDetail?.script, (key, value) => {
 			</View>
 		)
 	}
+	console.log('Farm detail: ', farmDetail)
+	const handleEdit = (id: string) => {
+		console.log('Edit farm with id: ', id)
+		
+		dispatch(
+			setFarmInput({
+				name: farmDetail.name,
+				address: farmDetail.address,
+				area: farmDetail.area,
+				plantation: farmDetail.type,
+				accepted_script: script,
+				edit: true,
+				id: id,
+			}),
+		)
+		router.push({
+			pathname: './(newFarm)',
+		})
+	}
+
 	return (
 		<View style={styles.container}>
 			<View style={styles.imageContainer}>
-				{/* Replace with actual image component */}
 				<Image source={require('~/assets/mango.png')} style={styles.image} />
 			</View>
 			<View style={styles.farmDetailContainer}>
@@ -82,84 +84,37 @@ const script = JSON.parse(farmDetail?.script, (key, value) => {
 					showsVerticalScrollIndicator={false} // Disable vertical scrollbar
 				>
 					<View style={styles.infoContainer}>
-						<Text style={styles.details}>Ngày trồng: {formatDate(farmDetail.created_at)}</Text>
+						{/* <Text style={styles.details}>Ngày trồng: {formatDate(farmDetail.created_at)}</Text>
 
 						<Text style={styles.details}>
 							Loại cây: {options.find((option) => option.value == farmDetail.type)?.label}
 						</Text>
 						<Text style={styles.details}>Diện tích: {farmDetail.area}</Text>
 						<Text style={styles.details}>Địa chỉ: {farmDetail.address}</Text>
-						<Text style={styles.details}>Kịch bản tưới: {script.script_source.model_name}</Text>
-					</View>
-					<View style={styles.buttonContainer}>
-						<ActivateButton
-							text="Tìm kiếm kịch bản tưới mới"
-							onPress={() => {
-								/* Handle search irrigation plan */
-							}}
+						<Text style={styles.details}>Kịch bản tưới: {script.script_source.model_name}</Text> */}
+						<DetailRow label="Ngày trồng" value={formatDate(farmDetail.created_at)} />
+						<DetailRow
+							label="Loại cây"
+							value={options.find((option) => option.value == farmDetail.type)?.label as string}
 						/>
+						<DetailRow label="Diện tích" value={farmDetail.area} />
+						<DetailRow label="Địa chỉ" value={farmDetail.address} />
+						<DetailRow label="Kịch bản tưới" value={script.script_source.model_name} />
+
 					</View>
 					<Text style={styles.footer}>Lịch tưới</Text>
 					<DataTableIrrigation script={script.irrigation_schedule.irrigation_instructions} />
+					<View style={styles.buttonContainer}>
+						<ActivateButton
+							text="Chỉnh sửa"
+							onPress={() => handleEdit(farmDetail.id)}
+						/>
+					</View>
 				</ScrollView>
 			</View>
 		</View>
 	)
 }
-
-
-// const styles = StyleSheet.create({
-// 	container: {
-// 		flex: 1,
-// 		backgroundColor: '#fff',
-// 	},
-// 	imageContainer: {
-// 		// Adjust as needed to match the UI
-// 		backgroundColor: 'green', // Example color
-// 	},
-// 	image: {
-// 		width: '100%',
-// 		height: '60%', // Adjust as needed
-// 	},
-// 	farmDetailContainer: {
-// 		borderRadius: 20,
-// 		position: 'absolute',
-// 		top: '32%',
-// 		backgroundColor: '#ffffff',
-// 		width: '100%',
-// 	},
-// 	infoTitle: {
-// 		padding: 10,
-// 		margin: 10,
-//         paddingBottom: 0,
-//         marginBottom: 0,
-// 	},
-// 	name: {
-// 		fontSize: theme.FontSize.LARGE,
-// 		fontWeight: 'bold',
-// 	},
-// 	infoContainer: {
-// 		backgroundColor: theme.Colors.BACKGROUND_TEXT,
-//         borderRadius: 20,
-//         padding: 20,
-//         margin: 15
-// 	},
-
-// 	details: {
-// 		fontSize: theme.FontSize.SMALL,
-//         marginBottom: 8,
-// 	},
-// 	buttonContainer: {
-// 		padding: 10,
-// 	},
-// 	footer: {
-// 		textAlign: 'center',
-// 		fontSize: 18,
-// 		fontWeight: 'bold',
-// 		color: 'green', // Example color
-// 		padding: 10,
-// 	},
-// })
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
@@ -171,7 +126,6 @@ const styles = StyleSheet.create({
 	},
 	image: {
 		width: '100%',
-
 	},
 	scroll: {
 		// diable the scroll bar
@@ -214,5 +168,8 @@ const styles = StyleSheet.create({
 	},
 })
 
-
 export default FarmDetail
+function dispatch(arg0: any) {
+	throw new Error('Function not implemented.')
+}
+

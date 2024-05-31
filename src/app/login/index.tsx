@@ -5,15 +5,17 @@ import { Link, useRouter } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Logo from '@/Components/logo'
 import TextInput from '@/Components/textInput'
-import PrimaryButton from '@/Components/primaryButton'
-import TextButton from '@/Components/textButton'
-import SecondaryButton from '@/Components/secondaryButton'
+import PrimaryButton from '@/Components/button/primaryButton'
+import TextButton from '@/Components/button/textButton'
+import SecondaryButton from '@/Components/button/secondaryButton'
 import { emailValidator, passwordValidator } from '@/Helper/utils'
 import theme from '@/Theme'
 import { useLoginMutation } from '@/Services'
 import { setCredentials } from '@/Store/reducers'
 import { useDispatch } from 'react-redux'
 import Popup from '@/Components/popup'
+import { saveCredentials } from '@/Store/reducers'
+import { AppDispatch } from '@/Store'
 
 export default function Login() {
 	const router = useRouter()
@@ -22,8 +24,7 @@ export default function Login() {
 	const [password, setPassword] = useState({ value: '', error: '' })
 	const [login, { isLoading }] = useLoginMutation()
 	const [popupVisible, setPopupVisible] = useState(false)
-
-	const dispatch = useDispatch()
+	const dispatch = useDispatch<AppDispatch>()
 
 	const _onLoginPressed = async () => {
 		const emailError = emailValidator(email.value)
@@ -35,7 +36,7 @@ export default function Login() {
 			return
 		}
 		try {
-			const result: any= await login({
+			const result: any = await login({
 				value: email.value,
 				password: password.value,
 			}).unwrap()
@@ -43,14 +44,16 @@ export default function Login() {
 
 			if (result) {
 				console.log('RESPONSE OF LOGIN: ', result)
-				dispatch(setCredentials(result))
+				//dispatch(setCredentials(result))
+				const { user, token } = result
+				await dispatch(saveCredentials(user, token))
 				router.push('(tabs)')
 			} else {
 				console.log('ERROR: ', result.error)
 				setPopupVisible(true)
 			}
 		} catch (err) {
-			console.log("ERR: ", err)
+			console.log('ERR: ', err)
 		}
 	}
 

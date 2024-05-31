@@ -1,11 +1,15 @@
-import React, { memo, useState } from 'react'
-import { View, Text, FlatList, Modal, TouchableOpacity, StyleSheet, Button, SafeAreaView, TextInput } from 'react-native'
+// UI
+import React, { memo, useEffect, useState } from 'react'
+import { View, Text, FlatList, Modal, TouchableOpacity, StyleSheet, TextInput } from 'react-native'
+import theme from '@/Theme'
+import { DataTable } from 'react-native-paper'
+
+// DATA
 import { useSelector,useDispatch } from 'react-redux'
 import {IrrigationSchedule, Script} from '@/Types/script'
 import {FormikProps, FormikValues} from 'formik'
-import theme from '@/Theme'
-import { DataTable } from 'react-native-paper'
 import { increaseFarmStep, setAcceptedScript } from '@/Store/reducers'
+import { getInputProps } from '@/Helper/utils'
 
 
 type Props = {
@@ -44,23 +48,10 @@ const SixthStep = ({ form, name }: Props) => {
 
 const handleInputChange = (value: string, rowIndex: number, field: string) => {
 	console.log(`value: ${value}, rowIndex: ${rowIndex}, field: ${field}`)
-
-	// Log the state before updating
-	console.log('Before update - editedData:', editedData)
 	let newData = [...editedData]
-
-	// Log the specific object before updating
-	console.log('Before update - specific object:', newData[rowIndex])
-
-	// Update the value 
-	// newData[rowIndex][0] = value
-	// new way to update
 	newData[rowIndex] = { ...newData[rowIndex], [field]: value }
-
-	// Log the updated data
-	console.log('After update - newData:', newData)
-	// Update the state
 	setEditedData(newData)
+	form.setFieldValue('irrigation_instructions', newData)
 }
 const handleSubmit = () => {
 
@@ -89,8 +80,14 @@ const handleSubmit = () => {
 	console.log('updatedScript:', selectedScript)
 	dispatch(increaseFarmStep())
 }
+useEffect(() => {
+	// set value for formik
+	form.setFieldValue('irrigation_instructions', scripts[0].irrigation_schedule.irrigation_instructions)
+	console.log('form selected script:', form)
+}
+, [selectedScript])
 
-
+const {isValid, values, setFieldValue} = form
 	return (
 		<View style={styles.container}>
 			<FlatList
@@ -120,8 +117,9 @@ const handleSubmit = () => {
 										<DataTable.Cell>
 											{isEditable ? (
 												<TextInput
+													{...getInputProps('time', form)}
 													style={styles.input}
-													value={instruction.start_time}
+													value={instruction.start_time.toString()}
 													onChangeText={(text) => handleInputChange(text, index, 'start_time')}
 												/>
 											) : (
@@ -131,6 +129,7 @@ const handleSubmit = () => {
 										<DataTable.Cell>
 											{isEditable ? (
 												<TextInput
+													{...getInputProps('duration', form)}
 													style={styles.input}
 													value={instruction.duration_minutes.toString()}
 													onChangeText={(text) =>
@@ -145,6 +144,7 @@ const handleSubmit = () => {
 										<DataTable.Cell>
 											{isEditable ? (
 												<TextInput
+													{...getInputProps('water', form)}
 													style={styles.input}
 													value={instruction.water_flow_rate.toString()}
 													onChangeText={(text) => handleInputChange(text, index, 'water_flow_rate')}
@@ -157,9 +157,26 @@ const handleSubmit = () => {
 									</DataTable.Row>
 								))}
 							</DataTable>
-							<Button title={isEditable ? 'Xác nhận' : 'Chỉnh sửa'} onPress={handleEditToggle} />
+
+							{/* <Button title={isEditable ? 'Xác nhận' : 'Chỉnh sửa'} onPress={handleEditToggle} /> */}
+
+							<TouchableOpacity
+								style={[
+									styles.button,
+									{ backgroundColor: isValid ? theme.Colors.PRIMARY_LIGHT : '#D3D3D3' },
+								]}
+								onPress={() => handleEditToggle()}
+								disabled={!isValid}
+							>
+								<Text style={[styles.buttonText, { color: isValid ? '#FFF' : '#000' }]}>
+									{isEditable ? 'Xác nhận' : 'Chỉnh sửa'}
+								</Text>
+							</TouchableOpacity>
 							<View style={styles.closeButton}>
-								<TouchableOpacity onPress={() => setSelectedScript(null)} style={styles.closeButton}>
+								<TouchableOpacity
+									onPress={() => setSelectedScript(null)}
+									style={styles.closeButton}
+								>
 									<Text style={styles.closeButtonText}>Hủy bỏ</Text>
 								</TouchableOpacity>
 								<TouchableOpacity onPress={() => handleSubmit()} style={styles.closeButton}>
@@ -219,11 +236,10 @@ const styles = StyleSheet.create({
 		fontSize: 18,
 		marginBottom: 12,
 	},
-	dataContainer:{
+	dataContainer: {
 		width: '100%',
-
 	},
-	
+
 	tableHeader: {
 		backgroundColor: '#DCDCDC',
 		fontSize: theme.FontSize.SMALL,
@@ -244,6 +260,17 @@ const styles = StyleSheet.create({
 		fontSize: 18,
 		color: '#007BFF',
 		textDecorationLine: 'underline',
+	},
+	button: {
+		paddingVertical: 10,
+		paddingHorizontal: 20,
+		borderRadius: 5,
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+	buttonText: {
+		fontSize: 16,
+		fontWeight: 'bold',
 	},
 })
 

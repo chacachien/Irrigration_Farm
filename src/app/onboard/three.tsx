@@ -4,8 +4,8 @@ import { Link, useRouter } from 'expo-router'
 
 import OnboardImage from '@/Components/onboardImage'
 import TextOnboard from '@/Components/onboardText'
-import BlurButton from '@/Components/button/BlurButton'
-import ActivateButton from '@/Components/button/ActivateButton'
+import BlurButton from '@/Components/button/blurButton'
+import ActivateButton from '@/Components/button/activateButton'
 
 import onboard_3 from '~/assets/onboard/onboard_3.png'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -15,15 +15,15 @@ import { setOnboarded } from '@/Store/reducers/onboard'
 const { width, height } = Dimensions.get('screen')
 
 export default function Three() {
-    const router = useRouter()
+	const router = useRouter()
 	const dispatch = useDispatch()
 
 	const title = 'Tùy chọn mô hình'
 	const description = 'Tùy chọn mô hình tưới tiêu phù hợp với khu vườn của bạn.'
-    const moveToNext = () => {
+	const moveToNext = () => {
 		dispatch(setOnboarded())
-        router.navigate('login')
-    }
+		router.navigate('login')
+	}
 
 	return (
 		<SafeAreaView style={{ flex: 1 }}>
@@ -32,7 +32,7 @@ export default function Three() {
 				<View style={styles.textContainer}>
 					<TextOnboard title={title} description={description} position={2} />
 					<View style={styles.navigationContainer}>
-						<ActivateButton  text="Bắt đầu" onPress={moveToNext} />
+						<ActivateButton text="Bắt đầu" onPress={moveToNext} />
 					</View>
 				</View>
 			</View>
@@ -54,12 +54,11 @@ const styles = StyleSheet.create({
 	navigationContainer: {
 		flex: 1,
 		flexDirection: 'row', // Arrange buttons in a row
-        justifyContent: 'center',
+		justifyContent: 'center',
 		alignItems: 'center', // Center buttons vertically
 		marginTop: 20, // Add margin from the text box
 
 		width: '80%',
-
 	},
 	textContainer: {
 		flex: 1,

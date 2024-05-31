@@ -5,6 +5,8 @@ import { Redirect, useRouter } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useDispatch } from 'react-redux'
 import { clearInput } from '@/Store/reducers'
+import { saveLogout } from '@/Store/reducers'
+import { AppDispatch } from '@/Store'
 
 // temp log out button here
 
@@ -12,7 +14,7 @@ import { clearInput } from '@/Store/reducers'
 export default function Home() {
   const user =  AsyncStorage.getItem('user')
   const router = useRouter()
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<AppDispatch>()
   useEffect(() => {
     if (user) {
       console.log('user', user)
@@ -23,7 +25,7 @@ export default function Home() {
   const handleLogout = async () => {
     await AsyncStorage.removeItem('user')
     await AsyncStorage.clear()
-    dispatch(clearInput())
+    await dispatch(saveLogout())
     router.push('login')
   }
 

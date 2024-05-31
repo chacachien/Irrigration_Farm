@@ -76,7 +76,7 @@ const store = configureStore({
 	},
 })
 
-
+export type AppDispatch = typeof store.dispatch
 const persistor = persistStore(store)
 setupListeners(store.dispatch)
 export { store, persistor }

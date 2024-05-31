@@ -6,5 +6,7 @@ export interface Farm {
     plantation: string
     scripts: Script[],
     accepted_script: Script,
-    step: number
+    step: number,
+    edit: boolean,
+    id: string
 }

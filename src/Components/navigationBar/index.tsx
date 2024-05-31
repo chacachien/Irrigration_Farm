@@ -14,17 +14,17 @@ type NavigationProps = {
 
 /** Will need to be a child of a Formik component to have access to Formik context */
 const Navigation = ({ maxSteps, currentIndex, onClickNext, onClickBack }: NavigationProps) => {
-	const isSubmitting = useSelector((state: any) => state.register.loading)
+	//const isSubmitting = useSelector((state: any) => state.register.loading)
     const isFirstStep = currentIndex === 0
 	const isLastStep = currentIndex === maxSteps - 1
 
 	// Grab what we need from formik without prop-drilling
-	const { validateForm, handleSubmit, isValid } = useFormikContext<any>()
+	const { validateForm, handleSubmit, isValid, errors, isSubmitting } = useFormikContext<any>()
 
 	// Will run form.validateForm() when the currentIndex prop is changed
 	useEffect(() => {
 		validateForm()
-	}, [currentIndex, validateForm])
+	}, [currentIndex, validateForm, errors])
 
 	return (
 		// <View style={styles.buttonContainer}>

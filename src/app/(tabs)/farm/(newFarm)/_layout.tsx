@@ -21,12 +21,6 @@ export default function FarmFormLayout() {
 			}}
 		>
 			<Stack.Screen name="index" options={{ title: 'Tạo nông trại' }} />
-			{/* <Stack.Screen
-				name="[id]"
-				options={{
-					title: 'Nông trại',
-				}}
-			/> */}
 		</Stack>
 	)
 }

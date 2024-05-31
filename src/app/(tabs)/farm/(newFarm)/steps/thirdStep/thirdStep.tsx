@@ -1,15 +1,14 @@
-// create a select box component (between phone or email)
-// use step schema to validate the form
+// UI
+import React, { memo, useEffect } from 'react'
+import { View, StyleSheet } from 'react-native'
+import TextInput from '@/Components/textInput'
 
-import React, { memo, useEffect, useState } from 'react'
-import { View, StyleSheet, Text } from 'react-native'
+// DATA
 import { getInputProps } from '@/Helper/utils'
-import { FormikProps, FormikValues } from 'formik'
+import { FormikProps, FormikValues, useFormikContext } from 'formik'
 import { useSelector, useDispatch } from 'react-redux'
 
-import theme from '@/Theme'
-import TextInput from '@/Components/textInput'
-import { setFarmInput } from '@/Store/reducers'
+
 
 type Props = {
 	form: FormikProps<FormikValues>
@@ -17,19 +16,15 @@ type Props = {
 }
 
 const ThirdStep = ({ form, name }: Props) => {
-	// name = firstStep
+	const address = useSelector((state: any) => state.farm.address)
+		const { setFieldValue, errors } = useFormikContext()
 
-	const farm = useSelector((state: any) => state.farm)
-
-	const logMovies = async () => {
-		console.log('You can make an API call when the modal opens.')
-	}
-	const dispatch = useDispatch()
-
-	useEffect(() => {
-		console.log('register: ', farm)
-		form.resetForm()
-	}, [])
+		useEffect(() => {
+			// Set the initial value for 'name' to 'name_farm' if not already set
+			if (form.values.address !== address) {
+				setFieldValue('address', address)
+			}
+		}, [])
 
 	return (
 		<View style={styles.container}>
@@ -37,7 +32,8 @@ const ThirdStep = ({ form, name }: Props) => {
 				{...getInputProps('address', form)}
 				label="Địa chỉ"
 				placeholder="Nhập vị trí nông trại"
-				value={form.values.value}
+				value={form.values.address}
+				errorText={form.errors.address as string}
 			/>
 		</View>
 	)

@@ -4,18 +4,18 @@ import { Link } from 'expo-router'
 
 import OnboardImage from '@/Components/onboardImage'
 import TextOnboard from '@/Components/onboardText'
-import BlurButton from '@/Components/button/BlurButton'
-import ActivateButton from '@/Components/button/ActivateButton'
+import BlurButton from '@/Components/button/blurButton'
+import ActivateButton from '@/Components/button/activateButton'
 import onboard_2 from 'assets/onboard/onboard_2.png'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 const { width, height } = Dimensions.get('screen')
 
-export default function Two({moveToNext }: {moveToNext: () => void}){
+export default function Two({ moveToNext }: { moveToNext: () => void }) {
 	const title = 'Quản lý tưới tiêu'
 	const description = 'Dễ dàng quản lý với chức năng lập lịch tưới tiêu.'
 
-return (
+	return (
 		<SafeAreaView style={{ flex: 1 }}>
 			<View style={styles.container}>
 				<OnboardImage image_name={onboard_2} />
@@ -28,14 +28,14 @@ return (
 				</View>
 			</View>
 		</SafeAreaView>
-)
+	)
 }
 
 const borderRadius = width / 2
 const styles = StyleSheet.create({
 	container: {
-        width,
-        height,
+		width,
+		height,
 		flex: 1,
 		alignItems: 'center',
 		backgroundColor: '#fff', // changed to white background color
@@ -71,4 +71,3 @@ const styles = StyleSheet.create({
 		elevation: 5,
 	},
 })
-

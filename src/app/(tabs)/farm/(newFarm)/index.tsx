@@ -1,16 +1,17 @@
+// UI
 import { View, StyleSheet } from 'react-native'
 import React, { useState } from 'react'
-import { useRouter } from 'expo-router'
 import ProgressBar from '@/Components/progress'
 import NavigationBar from '@/Components/navigationBar'
-import { Formik, FormikProps, FormikValues } from 'formik'
+import Popup from '@/Components/popup'
 
+// DATA
+import { useRouter } from 'expo-router'
+import { Formik, FormikProps, FormikValues } from 'formik'
 import { useSelector, useDispatch } from 'react-redux'
 import { genarateSteps, getStepSchema } from './steps/index'
-
-import Popup from '@/Components/popup'
 import { setFarmInput, increaseFarmStep, decreaseFarmStep, restartFarmStep, clearFarmInput } from '@/Store/reducers'
-import { useCreateFarmMutation } from '@/Services/farm'
+import { useCreateFarmMutation, useUpdateFarmMutation } from '@/Services/farm'
 
 
 const popupcontent = {
@@ -34,33 +35,62 @@ export default function NewFarmLayout() {
 	const dispatch = useDispatch()
 	const farm = useSelector((state: any) => state.farm)
 	const [postFarm, postFarmResult] = useCreateFarmMutation()
+	const [updateFarm, updateFarmResult] = useUpdateFarmMutation()
 	const [popupText, setPopupText] = useState(popupcontent.success)
 
-	const handleSubmit = async () => {
+
+	const handleSubmit = async (form: any) => {
 		const farmSubmit = {
 			name: farm.name,
 			address: farm.address,
 			area: farm.area,
 			type: farm.plantation,
 			script: JSON.stringify(farm.accepted_script),
-		}
 
-		const response = await postFarm(farmSubmit)
-		if (response.data) {
-			console.log('Tạo nông trại thành công: ', response.data)
-			setPopupText(popupcontent.success)
-			setPopupVisible(true)
-			router.back()
-		} else {
-			console.log('Tạo nông trại thất bại: ', response.error)
-			setPopupText(popupcontent.fail)
-			setPopupVisible(true)
+		}
+		if (farm.edit) {
+			const edit_farm = {
+				id: farm.id,
+				...farmSubmit
+			}
+			console.log('edit_farm: ', edit_farm)
+			console.log("form: ", form)
+			
+			const response = await updateFarm(edit_farm)
+			console.log('response: ', response)
+			form.setSubmitting(false)
+			if (response.data) {
+				console.log('Cập nhật nông trại thành công: ', response.data)
+				setPopupText(popupcontent.success)
+				setPopupVisible(true)
+				dispatch(clearFarmInput())
+				router.replace({ pathname: `/(tabs)/farm/${response.data.id}`})
+			} else {
+				console.log('Cập nhật nông trại thất bại: ', response.error)
+				setPopupText(popupcontent.fail)
+				setPopupVisible(true)
+			}
+		}
+		else{
+
+			const response = await postFarm(farmSubmit)
+			console.log('response: ', response)
+			form.setSubmitting(false)
+			if (response.data) {
+				console.log('Tạo nông trại thành công: ', response.data)
+				setPopupText(popupcontent.success)
+				setPopupVisible(true)
+				dispatch(clearFarmInput())
+				router.back()
+			} else {
+				console.log('Tạo nông trại thất bại: ', response.error)
+				setPopupText(popupcontent.fail)
+				setPopupVisible(true)
+			}
 		}
 	}
 	const renderCurrentStep = (form: FormikProps<FormikValues>) => {
 		const step = steps[currentIndex]
-
-		// opportunity to extend commonProps here with other relevant information
 		const commonProps = {
 			form,
 			name: step.name,
@@ -69,14 +99,17 @@ export default function NewFarmLayout() {
 		return <StepComponent {...commonProps} />
 	}
 
-	const goNext = async (values: any) => {
+	const goNext = async (form: any) => {
+		const values = form.values
 		dispatch(setFarmInput(values))
 		dispatch(increaseFarmStep())
 		if (currentIndex === steps.length - 1) {
+			form.setSubmitting(true)
+			console.log('SUBMIT chua: ', form)
 			dispatch(decreaseFarmStep())
-			console.log('SUBMIT: ', farm)
+
 			setTimeout(() => {
-				handleSubmit()
+				handleSubmit(form)
 			}, 1000)
 		}
 	}
@@ -88,12 +121,12 @@ export default function NewFarmLayout() {
 		setPopupVisible(false)
 		if (popupText.title === 'success') {
 			dispatch(clearFarmInput())
-			router.push('./farm')
 		} else {
 			dispatch(restartFarmStep())
-			router.back() 
 		}
+		router.back() 
 	}
+
 
 	return (
 		<View style={styles.container}>
@@ -101,7 +134,7 @@ export default function NewFarmLayout() {
 				<Formik
 					initialValues={{}} // this is the initial values of the form
 					validationSchema={getStepSchema(currentIndex, steps)}
-					onSubmit={handleSubmit}
+					onSubmit={()=> {console.log('submit')}}
 					validateOnBlur
 					validateOnChange
 					validateOnMount
@@ -113,7 +146,7 @@ export default function NewFarmLayout() {
 								<NavigationBar
 									maxSteps={steps.length}
 									currentIndex={currentIndex}
-									onClickNext={() => goNext(form.values)}
+									onClickNext={() => goNext(form)}
 									onClickBack={goBack}
 									values={form.values}
 								/>

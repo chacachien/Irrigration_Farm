@@ -1,7 +1,3 @@
-export interface Plantation {
-    value: string
-    label: string
-}
 
 export const options = [
 		{ value: 'DragonFruit', label: 'Thanh Long' },

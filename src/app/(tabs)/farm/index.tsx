@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'
 import { useRouter } from 'expo-router'
 import { setLogout } from '@/Store/reducers/auth'
 import FarmItem from '@/Components/farmItem'
-import AddButton from '@/Components/button/AddButton'
+import AddButton from '@/Components/button/addButton'
 import { useGetFarmsQuery } from '@/Services/farm'
 
 
@@ -83,7 +83,7 @@ const Farm: React.FC = () => {
 			contentContainerStyle={styles.container}
 			refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
 		>
-			{isLoading ? (
+			{isFetching ? (
 				<Text>Loading...</Text>
 			) : (
 				// <FlatList
@@ -102,7 +102,7 @@ const Farm: React.FC = () => {
 				// 	)}
 				// />
 				<View>
-					{data.farms?.map((item: any) => (
+					{data?.farms?.map((item: any) => (
 							<FarmItem
 								key={item.id}
 								name={item.name}

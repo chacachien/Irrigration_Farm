@@ -14,7 +14,7 @@ import { increaseStep, decreaseStep, clearInput } from '@/Store/reducers/registe
 import { setInput } from '@/Store/reducers/register'
 
 import Popup from '@/Components/popup'
-import SecondaryButton from '@/Components/secondaryButton'
+import SecondaryButton from '@/Components/button/secondaryButton'
 import { usePostFarmerMutation } from '@/Services'
 import { Farmer } from '@/Types/registerForm'
 import { setIsSubmitting } from '@/Store/reducers/register'

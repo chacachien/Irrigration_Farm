@@ -1,15 +1,12 @@
-// create a select box component (between phone or email)
-// use step schema to validate the form
-
-import React, { memo, useEffect, useState } from 'react'
+// UI
+import React, { memo, useEffect } from 'react'
 import { View, StyleSheet, Text } from 'react-native'
-import { getInputProps } from '@/Helper/utils'
-import { FormikProps, FormikValues } from 'formik'
-import { useSelector, useDispatch } from 'react-redux'
-
-import theme from '@/Theme'
 import TextInput from '@/Components/textInput'
-import { setFarmInput } from '@/Store/reducers'
+
+// DATA
+import { getInputProps } from '@/Helper/utils'
+import { FormikProps, FormikValues, useFormikContext } from 'formik'
+import { useSelector, useDispatch } from 'react-redux'
 
 type Props = {
 	form: FormikProps<FormikValues>
@@ -17,18 +14,14 @@ type Props = {
 }
 
 const FourthStep = ({ form, name }: Props) => {
-	// name = firstStep
-
-	const farm = useSelector((state: any) => state.farm)
-
-	const logMovies = async () => {
-		console.log('You can make an API call when the modal opens.')
-	}
-	const dispatch = useDispatch()
+	const area = useSelector((state: any) => state.farm.area)
+	const { setFieldValue, errors } = useFormikContext()
 
 	useEffect(() => {
-		console.log('register: ', farm)
-		form.resetForm()
+		// Set the initial value for 'area' to 'area' if not already set
+		if (form.values.area !== area) {
+			setFieldValue('area', area)
+		}
 	}, [])
 
 	return (
@@ -37,8 +30,9 @@ const FourthStep = ({ form, name }: Props) => {
 				{...getInputProps('area', form)}
 				label="Diện tích"
 				placeholder="Nhập diện tích nông trại"
-				value={form.values.value}
-				keyboardType='number-pad'
+				value={form.values.area?.toString()}
+				keyboardType="number-pad"
+				errorText={form.errors.area as string}
 			/>
 		</View>
 	)

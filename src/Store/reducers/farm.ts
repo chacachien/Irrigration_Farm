@@ -12,6 +12,8 @@ const initialState: Farm = {
     scripts: [] as Script[],
     accepted_script: {} as Script,
     step: 0,
+    edit: false,
+    id: '',
 }
 const maxStep = 7
 
@@ -52,6 +54,9 @@ const slice = createSlice({
 				accepted_script: values,
 			}
 		},
+        setEdit: (state, action) => {
+            state.edit = action.payload
+        }
 	},
 })
 
@@ -62,7 +67,8 @@ export const {
     decreaseFarmStep,
     restartFarmStep,
     clearFarmInput,
-    setAcceptedScript
+    setAcceptedScript,
+    setEdit
 } = slice.actions
 export const farmReducers = slice.reducer
 

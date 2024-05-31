@@ -18,9 +18,6 @@ export default function ActivateButton({ text, onPress}: ActivateButtonProps) {
 	)
 }
 
-const width = 300
-const borderRadius = width / 2
-
 
 const styles = StyleSheet.create({
 	nextButton: {
