@@ -1,10 +1,10 @@
 import React from 'react'
 import { View, Text, Image, TouchableOpacity, StyleSheet, Animated, Easing } from 'react-native'
 import { Link } from 'expo-router'
+import onboard_1 from '~/assets/onboard/onboard_1.png'
 
 
-
-export default function OnboardImage({ image_name }) {
+export default function OnboardImage({ image_name}: { image_name: any}) {
     const translateX = new Animated.Value(40)
         Animated.timing(translateX, {
             toValue: 0,

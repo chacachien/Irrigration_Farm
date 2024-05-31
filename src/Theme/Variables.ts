@@ -14,8 +14,13 @@ export enum Colors {
 	WHITE = '#ffffff',
 	TEXT = '#212529',
 	PRIMARY = '#E14032',
+	PRIMARY_LIGHT = '#568464',
 	SUCCESS = '#28a745',
 	ERROR = '#dc3545',
+	SURFACE = '#f8f9fa',
+	TEXT_BUTTON = '#416D50',
+	BUTTON_BACK = '#E9F3ED',
+	BACKGROUND_TEXT = '#E9F3ED',
 }
 
 export enum NavigationColors {
@@ -28,7 +33,7 @@ export enum NavigationColors {
 export enum FontSize {
 	SMALL = 16,
 	REGULAR = 20,
-	LARGE = 40,
+	LARGE = 28,
 }
 
 /**

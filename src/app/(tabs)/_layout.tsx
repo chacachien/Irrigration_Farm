@@ -1,12 +1,21 @@
 import React from 'react'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 
-import { Tabs } from 'expo-router'
+import { Redirect, Tabs } from 'expo-router'
 import Tab from './settings'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useSelector } from 'react-redux'
 
 export default function _layout() {
+	const user = useSelector((state: any) => state.auth.user)
+	if (!user) {
+		return <Redirect href="login" />
+	}
+	
 	return (
-		<Tabs screenOptions={{ tabBarActiveTintColor: 'blue' }}>
+		<Tabs screenOptions={{ tabBarActiveTintColor: 'blue', 
+			headerShown: false,
+		}}>
 			<Tabs.Screen
 				name="index"
 				options={{

@@ -12,3 +12,4 @@ export function Home({ color = '#000', ...props }: SvgProps) {
     </Svg>
   );
 }
+
