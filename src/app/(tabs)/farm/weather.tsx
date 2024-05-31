@@ -100,7 +100,9 @@ export default function weather() {
         {
           hourlyForecast.map((item, index) => {
             return (
-              <WeatherHourlyItem time={item.time} weatherIconName={item.weatherName} temp={item.temp} key={index} />
+              <React.Fragment key={index}>
+                <WeatherHourlyItem time={item.time} weatherIconName={item.weatherName} temp={item.temp} />
+              </React.Fragment>
             )
           })
         }
@@ -110,7 +112,9 @@ export default function weather() {
         {
           dailyForecast.map((item, index) => {
             return (
-              <WeatherDailyItem time={item.time} weatherIconName={item.weatherName} temp={item.temp} key={index} />
+              <React.Fragment key={index}>
+                <WeatherDailyItem time={item.time} weatherIconName={item.weatherName} temp={item.temp} />
+              </React.Fragment>
             )
           })
         }

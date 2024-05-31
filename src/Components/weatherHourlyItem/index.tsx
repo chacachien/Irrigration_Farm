@@ -8,21 +8,19 @@ interface weatherHourlyItemProps {
     time: string,
     weatherIconName: string,
     temp: number
-    key?: any
 }
 
 const WeatherHourlyItem: React.FC<weatherHourlyItemProps> = ({
     time,
     weatherIconName,
     temp,
-    key
 }) => {
     return (
-        <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }} key={key} >
-          <Text style={{ fontSize: 16 }}>{time}</Text>
-          { weatherIconName === 'cloudy' ? <WeatherIcon name={weatherIconName} type='small' width={49} height={55} /> : <WeatherIcon name={weatherIconName} type='small' width={40} height={55} />} 
-          <Text style={{ fontSize: 16 }}>{temp}°C</Text>
-        </View>
+            <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }} >
+            <Text style={{ fontSize: 16 }}>{time}</Text>
+            { weatherIconName === 'cloudy' ? <WeatherIcon name={weatherIconName} type='small' width={49} height={55} /> : <WeatherIcon name={weatherIconName} type='small' width={40} height={55} />} 
+            <Text style={{ fontSize: 16 }}>{temp}°C</Text>
+            </View>
     )
 }
 
