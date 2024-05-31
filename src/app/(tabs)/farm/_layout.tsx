@@ -18,10 +18,9 @@ export default function FarmLayout() {
 			),
 			
 			}}>
-
 			<Stack.Screen name="index" options={{ title: 'Nông trại' }} />
-			<Stack.Screen name="weather" options={{ title: 'Thời tiết' }} /> 
 			<Stack.Screen name='farmDetail' options={{ title: 'Nông trại' }} />
+			<Stack.Screen name="weather" options={{ title: 'Thời tiết' }} /> 
 			<Stack.Screen name="[id]" options={{
 				title: 'Nông trại',
 			}}
