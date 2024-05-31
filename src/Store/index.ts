@@ -18,6 +18,7 @@ import {
 	onboardReducers,
 	registerReducers,
 	authReducer,
+	farmReducers,
 } from './reducers'
 import { farmerApi } from '@/Services/farmers'
 import reactotron from '../../ReactotronConfig'
@@ -34,6 +35,7 @@ const reducers = combineReducers({
 	onboard: onboardReducers,
 	register: registerReducers,
 	auth: authReducer,
+	farm: farmReducers,
 	[farmerApi.reducerPath]: farmerApi.reducer,
 })
 
@@ -70,11 +72,11 @@ const store = configureStore({
 			},
 		})
 
-		return [...defaultMiddleware, API.middleware] as Tuple<any>;
+		return [...defaultMiddleware, API.middleware] as Tuple<any>
 	},
 })
 
-
+export type AppDispatch = typeof store.dispatch
 const persistor = persistStore(store)
 setupListeners(store.dispatch)
 export { store, persistor }

@@ -21,9 +21,12 @@ export const farmerApi = API.injectEndpoints({
 				method: 'POST',
 				body,
 			}),
-		})
+		}),
+		getMe: build.query<any, void>({
+			query: () => `/farmers/me`,
+		}),
 	}),
 	overrideExisting: true,
 })
 
-export const { useGetFarmerQuery, useLazyGetFarmerQuery, usePostFarmerMutation, useLoginMutation } = farmerApi
+export const { useGetFarmerQuery, useLazyGetFarmerQuery, usePostFarmerMutation, useLoginMutation, useGetMeQuery } = farmerApi
