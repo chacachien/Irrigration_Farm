@@ -38,6 +38,8 @@
 		"react-native-status-bar-height": "^2.6.0",
 		"react-native-svg": "^15.3.0",
 		"react-native-svg-transformer": "^1.4.0",
+		"react-native-swiper": "^1.6.0",
+		"react-native-swiper-flatlist": "^3.2.4",
 		"react-native-web": "~0.19.6",
 		"react-native-webview": "^13.10.2",
 		"react-redux": "^9.1.2",
