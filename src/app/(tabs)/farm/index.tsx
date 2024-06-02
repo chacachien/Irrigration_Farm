@@ -67,6 +67,7 @@ const Farm: React.FC = () => {
 
 	const handleWeatherPress = (farmId: string) => {
 		// Handle weather button press
+		router.push('./farm/weather')
 		console.log(`Weather button pressed for farm id: ${farmId}`)
 	}
 	const handlePress = (id: string) => {

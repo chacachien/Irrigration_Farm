@@ -6,14 +6,13 @@
 // 	const content: React.FC<SvgProps>
 // 	export default content
 // }
+import React from 'react'
+import { ViewStyle, StyleProp, TextStyle } from 'react-native'
 
 declare module '*.png' {
 	const value: any
 	export = value
 }
-
-import React from 'react'
-import { ViewStyle, StyleProp, TextStyle } from 'react-native'
 
 declare module 'react-native-form-select-picker' {
 	export interface ItemProps {
@@ -88,3 +87,5 @@ declare module 'react-native-form-select-picker' {
 		static Item: typeof SelectPickerItem
 	}
 }
+
+declare module 'react-native-remote-svg'

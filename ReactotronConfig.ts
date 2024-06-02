@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { reactotronRedux } from 'reactotron-redux'
 import { ReactotronReactNative } from 'reactotron-react-native'; // Add this import
 
-const reactotron  = Reactotron.setAsyncStorageHandler(AsyncStorage)
+const reactotron = Reactotron.setAsyncStorageHandler(AsyncStorage)
 	.configure({
 		name: 'React Native Demo',
 	})

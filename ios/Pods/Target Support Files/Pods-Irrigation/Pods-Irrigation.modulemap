@@ -1,0 +1,6 @@
+module Pods_Irrigation {
+  umbrella header "Pods-Irrigation-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -65,10 +65,10 @@
 // 	)
 // }
 
-if (__DEV__) {
-	console.log('Reactotron enabled')
-	require('../../ReactotronConfig')
-}
+// if (__DEV__) {
+// 	console.log('Reactotron enabled')
+// 	require('../../ReactotronConfig')
+// }
 import { View, Text, Button } from 'react-native'
 import React from 'react'
 import { Stack, useRouter, Redirect } from 'expo-router'
