@@ -72,7 +72,7 @@ const store = configureStore({
 			},
 		})
 
-		return [...defaultMiddleware, API.middleware] as Tuple<any>;
+		return [...defaultMiddleware, API.middleware] as Tuple<any>
 	},
 })
 

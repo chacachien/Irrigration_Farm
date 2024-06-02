@@ -16,6 +16,9 @@ import { useDispatch } from 'react-redux'
 import Popup from '@/Components/popup'
 import { saveCredentials } from '@/Store/reducers'
 import { AppDispatch } from '@/Store'
+import { ActivityIndicator } from 'react-native-paper'
+
+
 
 export default function Login() {
 	const router = useRouter()
@@ -24,6 +27,9 @@ export default function Login() {
 	const [password, setPassword] = useState({ value: '', error: '' })
 	const [login, { isLoading }] = useLoginMutation()
 	const [popupVisible, setPopupVisible] = useState(false)
+
+
+
 	const dispatch = useDispatch<AppDispatch>()
 
 	const _onLoginPressed = async () => {
@@ -53,7 +59,8 @@ export default function Login() {
 				setPopupVisible(true)
 			}
 		} catch (err) {
-			console.log('ERR: ', err)
+			console.log('ERROR: ', err)
+			setPopupVisible(true)
 		}
 	}
 
@@ -117,8 +124,14 @@ export default function Login() {
 				<View style={styles.forgotPassword}>
 					<TextButton title="Quên mật khẩu?" onPress={() => handleForgotPassword()} />
 				</View>
-
+				{isLoading ? (
+					<View>
+						<ActivityIndicator animating={true} color={theme.Colors.PRIMARY_LIGHT} />
+					</View>
+				
+				): 
 				<PrimaryButton title="Đăng nhập" onPress={_onLoginPressed} />
+				}
 				<View style={styles.continuePhone}>
 					<TextButton title="Tiếp tục với số điện thoại" onPress={() => handleChangeType()} />
 				</View>
@@ -126,9 +139,12 @@ export default function Login() {
 
 			<View style={styles.noAccount}>
 				<Text style={styles.label}>Chưa có tài khoản? </Text>
+
 				<SecondaryButton title="Đăng ký" onPress={() => router.push('register')} />
+				
 			</View>
 			{popupVisible && (
+
 				<View style={styles.popupContainer}>
 					<Popup
 						visible={popupVisible}

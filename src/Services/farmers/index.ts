@@ -1,7 +1,6 @@
 import { API } from '../base'
-import {RegisterForm, Farmer} from '@/Types/registerForm'
+import { RegisterForm, Farmer } from '@/Types/registerForm'
 import { LoginForm, Credentials } from '@/Types/loginType'
-
 
 export const farmerApi = API.injectEndpoints({
 	endpoints: (build) => ({
@@ -21,9 +20,26 @@ export const farmerApi = API.injectEndpoints({
 				method: 'POST',
 				body,
 			}),
-		})
+		}),
+		getMe: build.query<any, void>({
+			query: () => `/farmers/me`,
+		}),
+		updateMe: build.mutation<any, any>({
+			query: (body) => ({
+				url: `/farmers/me`,
+				method: 'PATCH',
+				body,
+			}),
+		}),
 	}),
 	overrideExisting: true,
 })
 
-export const { useGetFarmerQuery, useLazyGetFarmerQuery, usePostFarmerMutation, useLoginMutation } = farmerApi
+export const {
+	useGetFarmerQuery,
+	useLazyGetFarmerQuery,
+	usePostFarmerMutation,
+	useLoginMutation,
+	useGetMeQuery,
+	useUpdateMeMutation,
+} = farmerApi

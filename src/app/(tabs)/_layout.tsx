@@ -2,20 +2,17 @@ import React from 'react'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 
 import { Redirect, Tabs } from 'expo-router'
-import Tab from './settings'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useSelector } from 'react-redux'
 
 export default function _layout() {
-	const user = useSelector((state: any) => state.auth.user)
-	if (!user) {
-		return <Redirect href="login" />
-	}
+	// const user = useSelector((state: any) => state.auth.user)
+	// if (!user) {
+	// 	return <Redirect href="login" />
+	// }
 	
 	return (
-		<Tabs screenOptions={{ tabBarActiveTintColor: 'blue', 
-			headerShown: false,
-		}}>
+		<Tabs screenOptions={{ tabBarActiveTintColor: 'blue', headerShown: false }}>
 			<Tabs.Screen
 				name="index"
 				options={{
@@ -23,20 +20,22 @@ export default function _layout() {
 					tabBarIcon: ({ color }) => <FontAwesome size={28} name="home" color={color} />,
 				}}
 			/>
-            <Tabs.Screen
-                name = "farm"
-                options = {{
-                    title: 'Nông trại',
-                    tabBarIcon: ({ color }) => <FontAwesome size={28} name="leaf" color={color} />,
-                }}
-            />
-            <Tabs.Screen
-                name = "notification"
-                options = {{
-                    title: 'Thông báo',
-                    tabBarIcon: ({ color }) => <FontAwesome size={28} name="bell" color={color} />,
-                }}
-            />
+			<Tabs.Screen
+				name="farm"
+				options={{
+					title: 'Nông trại',
+					tabBarIcon: ({ color }) => <FontAwesome size={28} name="leaf" color={color} />,
+				}}
+			/>
+			<Tabs.Screen
+				name="notification"
+				options={{
+					title: 'Thông báo',
+					tabBarIcon: ({ color }) => <FontAwesome size={28} name="bell" color={color} />,
+					headerShown: true,
+					headerTitleAlign: 'center',
+				}}
+			/>
 
 			<Tabs.Screen
 				name="settings"
