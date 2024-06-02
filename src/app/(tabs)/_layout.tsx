@@ -17,7 +17,10 @@ export default function _layout() {
 				name="index"
 				options={{
 					title: 'Trang chủ',
-					tabBarIcon: ({ color }) => <FontAwesome size={28} name="home" color={color} />,
+					tabBarIcon: ({ color }) => <FontAwesome size={28} name="home" color={color}
+					 />,
+					 headerShown: false,
+					 headerTitleAlign: 'center'
 				}}
 			/>
 			<Tabs.Screen
@@ -42,6 +45,14 @@ export default function _layout() {
 				options={{
 					title: 'Cài đặt',
 					tabBarIcon: ({ color }) => <FontAwesome size={28} name="cog" color={color} />,
+				}}
+			/>
+			
+			<Tabs.Screen
+				name="news"
+				options={{
+					title: 'Tin tức',
+					href: null
 				}}
 			/>
 		</Tabs>
