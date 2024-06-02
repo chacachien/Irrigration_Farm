@@ -7,6 +7,8 @@ import FarmItem from '@/Components/farmItem'
 import AddButton from '@/Components/button/addButton'
 import { useGetFarmsQuery } from '@/Services/farm'
 
+import { useFocusEffect } from '@react-navigation/native'
+import { useCallback } from 'react'
 
 
 // const farms = [
@@ -45,11 +47,11 @@ import { useGetFarmsQuery } from '@/Services/farm'
 // ]
 
 const Farm: React.FC = () => {
-  const router = useRouter()
+	const router = useRouter()
 	const dispatch = useDispatch()
 	const { data, isFetching, isLoading, refetch } = useGetFarmsQuery({})
 	const [refreshing, setRefreshing] = React.useState(false)
-	
+
 	const onRefresh = React.useCallback(async () => {
 		setRefreshing(true)
 		try {
@@ -59,6 +61,11 @@ const Farm: React.FC = () => {
 			setRefreshing(false)
 		}
 	}, [refetch])
+	useFocusEffect(
+		useCallback(() => {
+			refetch()
+		}, [refetch]),
+	)
 
 	const handleLogout = () => {
 		dispatch(setLogout())
@@ -71,11 +78,14 @@ const Farm: React.FC = () => {
 		console.log(`Weather button pressed for farm id: ${farmId}`)
 	}
 	const handlePress = (id: string) => {
-		console.log("Farm id: ", id)
+		console.log('Farm id: ', id)
 		router.push(`./farm/${id}`)
 	}
 	const handleAddFarm = () => {
 		router.push('./farm/(newFarm)')
+	}
+	if (isLoading) {
+		return <Text>Loading...</Text>
 	}
 
 
@@ -84,6 +94,7 @@ const Farm: React.FC = () => {
 			contentContainerStyle={styles.container}
 			refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
 		>
+			{data?.farms?.length === 0 && <Text>Hiện tại Bạn không có nông trại nào? Bấm nút thêm ở góc phải màn hình.</Text>}
 			{isFetching ? (
 				<Text>Loading...</Text>
 			) : (
@@ -104,14 +115,14 @@ const Farm: React.FC = () => {
 				// />
 				<View>
 					{data?.farms?.map((item: any) => (
-							<FarmItem
-								key={item.id}
-								name={item.name}
-								type={item.type}
-								icon={item.type}
-								onPress={() => handlePress(item.id)}
-								onWeatherPress={() => handleWeatherPress(item.id)}
-							/>
+						<FarmItem
+							key={item.id}
+							name={item.name}
+							type={item.type}
+							icon={item.type}
+							onPress={() => handlePress(item.id)}
+							onWeatherPress={() => handleWeatherPress(item.id)}
+						/>
 					))}
 				</View>
 			)}

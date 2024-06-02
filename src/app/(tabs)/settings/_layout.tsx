@@ -1,5 +1,7 @@
 import { Stack, useRouter } from "expo-router";
-import { Button } from "react-native";
+import React from "react";
+import { Button, TouchableOpacity } from "react-native";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 
 const infoDetail = {
 	userId: "123456",
@@ -21,16 +23,34 @@ export default function SettingsLayout() {
     //     params: infoDetail
     // })
 
+
     return (
-        <Stack screenOptions={{
-            headerTitleAlign: 'center'
-        }}>
-            <Stack.Screen name="index" options={{ title: "Cài đặt" }} initialParams={ infoDetail } />
-            <Stack.Screen name="infoDetails" options={{ title: "Thông tin cá nhân" }} initialParams={ infoDetail } />
-            <Stack.Screen name='changePassword' options={{ title: "Đổi mật khẩu" }} />
-            <Stack.Screen name='help' options={{ title: "Trợ giúp" }} />
-            <Stack.Screen name='privacy' options={{ title: "Chính sách và quyền riêng tư" }} />
-            <Stack.Screen name='intro' options={{ title: "Giới thiệu về ứng dụng" }} />
-        </Stack>
-    )
+			<Stack
+
+			>
+				<Stack.Screen
+					name="index"
+					options={{ title: 'Cài đặt', headerTitleAlign: 'center' }}
+					initialParams={infoDetail}
+				/>
+				<Stack.Screen
+					name="infoDetails"
+					options={{ title: 'Thông tin cá nhân', headerTitleAlign: 'center' }}
+					initialParams={infoDetail}
+				/>
+				<Stack.Screen
+					name="changePassword"
+					options={{ title: 'Đổi mật khẩu', headerTitleAlign: 'center' }}
+				/>
+				<Stack.Screen name="help" options={{ title: 'Trợ giúp', headerTitleAlign: 'center' }} />
+				<Stack.Screen
+					name="privacy"
+					options={{ title: 'Chính sách và quyền riêng tư', headerTitleAlign: 'center' }}
+				/>
+				<Stack.Screen
+					name="intro"
+					options={{ title: 'Giới thiệu về ứng dụng', headerTitleAlign: 'center' }}
+				/>
+			</Stack>
+		)
 }

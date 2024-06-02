@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { AppDispatch } from "..";
 
@@ -10,6 +10,7 @@ const slice = createSlice({
 		token: null | string
 	},
 	reducers: {
+
 		setCredentials(state, action: PayloadAction<{ user: any; token: string }>) {
 			// await AsyncStorage.setItem(
 			// 	'user',
@@ -46,4 +47,3 @@ export const saveLogout = () => async (dispatch: AppDispatch) => {
 
 export const { setCredentials, setLogout} = slice.actions
 export const authReducer = slice.reducer
-

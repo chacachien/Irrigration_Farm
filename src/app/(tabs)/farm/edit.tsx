@@ -11,9 +11,10 @@ import {
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import { DataTable } from 'react-native-paper'
-import { useLocalSearchParams, useRouter } from 'expo-router'
+import { Stack, useLocalSearchParams, useRouter } from 'expo-router'
 import {options} from '@/Types/plantation'
 import { useSelector } from 'react-redux'
+import FontAwesome from '@expo/vector-icons/FontAwesome'
 
 const validationSchema = Yup.object().shape({
 	created_at: Yup.date().required('Ngày trồng là bắt buộc'),
@@ -58,13 +59,25 @@ const EditFarmDetailsScreen = () => {
 		},
 	})
 
-	const handleInputChange = (value, index, field) => {
+	const handleInputChange = (value: string, index: number, field:string) => {
 		const updatedInstructions = [...formik.values.irrigation_instructions]
 		updatedInstructions[index][field] = value
 		formik.setFieldValue('irrigation_instructions', updatedInstructions)
 	}
 
 	return (
+				<>
+			<Stack.Screen
+
+				// Add the correct type definition for the headerLeft prop
+				options={{
+					headerLeft: () => (
+						<TouchableOpacity onPress={() => router.back()}>
+							<FontAwesome name="angle-left" size={30} color="#000" />
+						</TouchableOpacity>
+					),
+				}}
+			/>
 		<View style={styles.container}>
 			<ScrollView
 				style={styles.scroll}
@@ -118,7 +131,7 @@ const EditFarmDetailsScreen = () => {
 							<DataTable.Title>Thời lượng</DataTable.Title>
 							<DataTable.Title>Lượng nước</DataTable.Title>
 						</DataTable.Header>
-						{formik.values.irrigation_instructions.map((instruction, index) => (
+						{formik.values.irrigation_instructions.map((instruction:any, index:number) => (
 							<DataTable.Row key={index}>
 								<DataTable.Cell>
 									<TextInput
@@ -157,6 +170,7 @@ const EditFarmDetailsScreen = () => {
 				</TouchableOpacity>
 			</ScrollView>
 		</View>
+	</>
 	)
 }
 

@@ -16,15 +16,17 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.chacachien.template"
     },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      },
-      "package": "com.chacachien.template"
-    },
+			"adaptiveIcon": {
+				"foregroundImage": "./assets/adaptive-icon.png",
+				"backgroundColor": "#ffffff"
+			},
+			"package": "com.chacachien.template",
+			"googleServicesFile": "./android/app/google-services.json"
+		},
     "web": {
       "favicon": "./assets/favicon.png"
     },
@@ -33,6 +35,14 @@
     ],
     "experiments": {
       "tsconfigPaths": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "aa47d251-6b51-4017-acae-c05582bb517b"
+      }
     }
   }
 }
