@@ -9,7 +9,7 @@ import SettingItem from '@/Components/settingItem'
 const avatarPhoto = require('assets/images/avatar1.jpg')
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { saveLogout } from '@/Store/reducers'
 import { AppDispatch } from '@/Store'
 import { useGetMeQuery } from '@/Services'
@@ -27,7 +27,8 @@ const Settings: React.FC = () => {
 	// 	email: string
 	// 	phoneNumber: string
 	// }>()
-	const { data, error, isLoading, refetch } = useGetMeQuery()
+	const user = useSelector((state: any) => state.auth.user)
+	const { data, error, isLoading, refetch } = useGetMeQuery(user?.id)
 	useFocusEffect(
 		useCallback(() => {
 			refetch()
@@ -53,68 +54,78 @@ const Settings: React.FC = () => {
 	}
 
 	return (
-		<View style={{ padding: '5%', flex: 1 }}>
-			<View style={{ flexDirection: 'row', alignItems: 'center' }}>
-				<Image
-					source={avatarPhoto}
-					style={{ width: 64, height: 64, borderRadius: 32, marginRight: '5%' }}
-				/>
-				<Text style={styles.nameTextStyle}>{data?.username}</Text>
+		<>
+			<Stack.Screen
+				// Add the correct type definition for the headerLeft prop
+				options={{
+					// do not show header left
+					headerLeft: () => null,
+				}}
+
+			/>
+			<View style={{ padding: '5%', flex: 1 }}>
+				<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+					<Image
+						source={avatarPhoto}
+						style={{ width: 64, height: 64, borderRadius: 32, marginRight: '5%' }}
+					/>
+					<Text style={styles.nameTextStyle}>{data?.username}</Text>
+				</View>
+				<View>
+					<Text style={styles.titleTextStyle}>Cá nhân</Text>
+					<SettingItem
+						title="Thông tin cá nhân"
+						icon="user"
+						underlined={true}
+						onPress={() =>
+							router.push({
+								pathname: 'settings/infoDetails',
+							})
+						}
+					/>
+					<SettingItem
+						title="Đổi mật khẩu"
+						icon="key"
+						onPress={() => {
+							router.push('settings/changePassword?username=' + data?.username)
+						}
+						}
+
+					/>
+				</View>
+				<View>
+					<Text style={styles.titleTextStyle}>Hệ thống</Text>
+					<SettingItem title="Chế độ tối" icon="dark" onPress={() => {}} />
+				</View>
+				<View>
+					<Text style={styles.titleTextStyle}>Hỗ trợ</Text>
+					<SettingItem
+						title="Trợ giúp"
+						icon="question"
+						underlined={true}
+						onPress={() => {
+							router.push('settings/help')
+						}}
+					/>
+					<SettingItem title="Đăng xuất" icon="log-out" underlined={true} onPress={handleLogout} />
+					<SettingItem
+						title="Chính sách và quyền riêng tư"
+						underlined={true}
+						icon="lock"
+						onPress={() => {
+							router.push('settings/privacy')
+						}}
+					/>
+					<SettingItem
+						title="Giới thiệu ứng dụng"
+						icon="info"
+						onPress={() => {
+							router.push('settings/intro')
+						}}
+					/>
+				</View>
 			</View>
-			<View>
-				<Text style={styles.titleTextStyle}>Cá nhân</Text>
-				<SettingItem
-					title="Thông tin cá nhân"
-					icon="user"
-					underlined={true}
-					onPress={() =>
-						router.push({
-							pathname: 'settings/infoDetails',
-						})
-					}
-				/>
-				<SettingItem
-					title="Đổi mật khẩu"
-					icon="key"
-					onPress={() =>
-						router.push({
-							pathname: 'settings/changePassword',
-						})
-					}
-				/>
-			</View>
-			<View>
-				<Text style={styles.titleTextStyle}>Hệ thống</Text>
-				<SettingItem title="Chế độ tối" icon="dark" onPress={() => {}} />
-			</View>
-			<View>
-				<Text style={styles.titleTextStyle}>Hỗ trợ</Text>
-				<SettingItem
-					title="Trợ giúp"
-					icon="question"
-					underlined={true}
-					onPress={() => {
-						router.push('settings/help')
-					}}
-				/>
-				<SettingItem title="Đăng xuất" icon="log-out" underlined={true} onPress={handleLogout} />
-				<SettingItem
-					title="Chính sách và quyền riêng tư"
-					underlined={true}
-					icon="lock"
-					onPress={() => {
-						router.push('settings/privacy')
-					}}
-				/>
-				<SettingItem
-					title="Giới thiệu ứng dụng"
-					icon="info"
-					onPress={() => {
-						router.push('settings/intro')
-					}}
-				/>
-			</View>
-		</View>
+		</>
 	)
 }
 

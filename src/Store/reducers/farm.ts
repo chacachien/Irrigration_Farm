@@ -7,7 +7,7 @@ import { Script } from '@/Types/script'
 const initialState: Farm = {
     name: '',
     address: '',
-    area: 0,
+    des: '',
     plantation: '',
     scripts: [] as Script[],
     accepted_script: {} as Script,

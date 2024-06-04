@@ -2,7 +2,7 @@ import { Script } from './script'
 export interface Farm {
     name: string
     address: string
-    area: number
+    des: string
     plantation: string
     scripts: Script[],
     accepted_script: Script,

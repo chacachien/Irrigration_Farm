@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { View, Text, StyleSheet, FlatList, RefreshControl, ScrollView } from 'react-native'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useRouter } from 'expo-router'
 import { setLogout } from '@/Store/reducers/auth'
 import FarmItem from '@/Components/farmItem'
@@ -49,21 +49,27 @@ import { useCallback } from 'react'
 const Farm: React.FC = () => {
 	const router = useRouter()
 	const dispatch = useDispatch()
+	const user = useSelector((state: any) => state.auth.user)
 	const { data, isFetching, isLoading, refetch } = useGetFarmsQuery({})
+	const [farm, setFarm] = React.useState([])
 	const [refreshing, setRefreshing] = React.useState(false)
 
+	console.log('data', data)	
 	const onRefresh = React.useCallback(async () => {
 		setRefreshing(true)
 		try {
 			await refetch() // Re-fetch the data
 			console.log('REFRESHING....')
 		} finally {
+			setFarm(data?.filter((item: any) => item.user.id === user.id))
 			setRefreshing(false)
 		}
 	}, [refetch])
+
 	useFocusEffect(
 		useCallback(() => {
 			refetch()
+			setFarm(data?.filter((item: any) => item.user.id === user.id))
 		}, [refetch]),
 	)
 
@@ -87,14 +93,17 @@ const Farm: React.FC = () => {
 	if (isLoading) {
 		return <Text>Loading...</Text>
 	}
-
+	console.log('farm', farm)
+	useEffect(() => {
+		setFarm(data?.filter((item: any) => item.user.id === user.id))
+	}, [])
 
 	return (
 		<ScrollView
 			contentContainerStyle={styles.container}
 			refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
 		>
-			{data?.farms?.length === 0 && <Text>Hiện tại Bạn không có nông trại nào? Bấm nút thêm ở góc phải màn hình.</Text>}
+			{farm?.length === 0 && <Text>Hiện tại Bạn không có nông trại nào? Bấm nút thêm ở góc phải màn hình.</Text>}
 			{isFetching ? (
 				<Text>Loading...</Text>
 			) : (
@@ -114,11 +123,11 @@ const Farm: React.FC = () => {
 				// 	)}
 				// />
 				<View>
-					{data?.farms?.map((item: any) => (
+					{farm?.map((item: any) => (
 						<FarmItem
 							key={item.id}
 							name={item.name}
-							type={item.type}
+							type={item.cultivar.name}
 							icon={item.type}
 							onPress={() => handlePress(item.id)}
 							onWeatherPress={() => handleWeatherPress(item.id)}

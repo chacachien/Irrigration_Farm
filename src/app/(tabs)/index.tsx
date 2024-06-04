@@ -1,12 +1,15 @@
 import { View, Text, Button, Dimensions, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
 import { StatusBar } from "react-native";
-import { router } from 'expo-router';
+import { router, useRouter } from 'expo-router';
 import Swiper from 'react-native-swiper';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 // import { SafeAreaView } from 'react-native-safe-area-context';
+
+import { useSelector } from 'react-redux';
+import { useGetMeQuery } from '@/Services';
 
 const irrigationSchedule = [
   {
@@ -107,17 +110,23 @@ const avatarPhoto = require('assets/images/avatar1.jpg');
 
 export default function Home() {
   const [currenTopic, setCurrentTopic] = useState('Tin tức');
+  const user  = useSelector((state: any) => state.auth.user);
+  const { data, isLoading, isFetching, refetch } = useGetMeQuery(user?.id);
 
-  
+
+
+  const router = useRouter()
+  console.log('user', data);
+
   return (
     <SafeAreaView style={{ flex: 1, paddingHorizontal: '4%', paddingTop: StatusBar.currentHeight, backgroundColor: 'white' }}>
       <ScrollView style={{ marginBottom: 13}}>
       <View style={{ flex: 1, minHeight: 56, maxHeight: 56, flexDirection: 'row', backgroundColor: '#f5f5f5', marginHorizontal: '-4%', paddingHorizontal: '5%' }}>
-          <TouchableOpacity onPress={() => {}} style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+          <TouchableOpacity onPress={() => {router.push('settings/infoDetails')}} style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
               <Image source={avatarPhoto} 
                       style={{ width: 46, height: 46, borderRadius: 23}}
                       />
-              <Text style={{ paddingLeft: 9, fontSize: 19, fontWeight: '500' }}>Nguyễn Văn A</Text>
+              <Text style={{ paddingLeft: 9, fontSize: 19, fontWeight: '500' }}>{data?.firstName+" " + data?.lastName}</Text>
           </TouchableOpacity>
           <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end' }}>
             <TouchableOpacity onPress={() => {}}>

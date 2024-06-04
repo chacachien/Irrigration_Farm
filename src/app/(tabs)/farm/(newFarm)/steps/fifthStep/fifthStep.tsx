@@ -1,10 +1,8 @@
-
 // ui
 import React, { memo, useEffect, useState } from 'react'
 import { View, StyleSheet, Text, Modal, ActivityIndicator } from 'react-native'
 import ActivateButton from '@/Components/button/activateButton'
 import theme from '@/Theme'
-
 
 //data
 import { FormikProps, FormikValues } from 'formik'
@@ -18,36 +16,31 @@ type Props = {
 }
 
 const FifthStep = ({ form, name }: Props) => {
-
 	const farm = useSelector((state: any) => state.farm)
 	const [modalVisible, setModalVisible] = useState(false)
 	const { data, isFetching, isLoading } = useGetScriptsQuery({})
 	const dispatch = useDispatch()
 
-
 	// useEffect(() => {
-	// 	form.values.scripts = 
+	// 	form.values.scripts =
 	// 	console.log('form: ', form.values)
 	// }, [])
 	useEffect(() => {
-		if (farm?.edit){
+		if (farm?.edit) {
 			console.log('editfarm: ', farm)
 			form.values.scripts = [farm?.accepted_script]
 		}
-	} , [])
+	}, [])
 	const handlePress = () => {
 		setModalVisible(true)
 		// fake wait 2s and
-		setTimeout(() => {
-			console.log('data: ', data)
-				const script = {
-					scripts: data?.scripts ,
-				}
-				dispatch(setFarmInput(script))
-			console.log('form: ', form.values)
-			setModalVisible(false)
-			dispatch(increaseFarmStep())
-		}, 2000)
+
+		console.log('data: ', data)
+
+		dispatch(setFarmInput(data))
+		console.log('form: ', form.values)
+		setModalVisible(false)
+		dispatch(increaseFarmStep())
 	}
 
 	return (

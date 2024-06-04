@@ -10,6 +10,7 @@ import theme from '@/Theme'
 import { FormikProps, FormikValues } from 'formik'
 import { useSelector } from 'react-redux'
 import { options } from '@/Types/plantation'
+import { useGetCultivarsQuery } from '@/Services/cultivar'
 
 type Props = {
 	form: FormikProps<FormikValues>
@@ -19,9 +20,10 @@ type Props = {
 
 const SecondStep = ({ form, name }: Props) => {
 	const plantation = useSelector((state: any) => state.farm.plantation)
-
 	const [selected, setSelected] = useState(plantation)
 	console.log('plantation: ', plantation)
+	const { data, error, isLoading, refetch } = useGetCultivarsQuery({})
+	console.log('data', data)
 
 
 	return (
@@ -40,8 +42,8 @@ const SecondStep = ({ form, name }: Props) => {
 				selected={selected}
 				value={form.values.plantation}
 			> 
-				{Object.values(options).map((val, index) => (
-					<SelectPicker.Item label={val.label} value={val.value} key={index} />
+				{data && Object.values(data).map((val: any, index) => (
+					<SelectPicker.Item label={val.name} value={val.id} key={index} />
 				))}
 			</SelectPicker>
 		</View>

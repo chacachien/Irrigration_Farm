@@ -2,9 +2,9 @@
 import * as Yup from 'yup'
 
 const fourthStepValidation = Yup.object().shape({
-	area: Yup.string()
-		.required('Area is required')
-		.matches(/^[0-9]*$/, 'Area must contain only numbers'),
+	des: Yup.string()
+		.required('Description is required')
+		.max(255, 'Description must be less than 255 characters'),
 })
 
 export default fourthStepValidation

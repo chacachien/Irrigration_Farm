@@ -4,15 +4,19 @@ import TextInput from '@/Components/textInput'
 import PrimaryButton from '@/Components/button/primaryButton'
 
 
-import { Stack, router } from 'expo-router'
+import { Stack, router, useLocalSearchParams } from 'expo-router'
 import TextButton from '@/Components/button/textButton'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 import { useUpdateMeMutation } from '@/Services'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
+import {useResetPasswordMutation} from '@/Services'
 
 const changePassword = () => {
-	const [updateMe] = useUpdateMeMutation()
+	const [resetPassword, result] = useResetPasswordMutation()
+	const { username } = useLocalSearchParams()
+	console.log('Username: ', username)
+
 	const validationSchema = Yup.object().shape({
 		oldPassword: Yup.string().required('Mật khẩu cũ là bắt buộc'),
 		oldPasswordConfirm: Yup.string()
@@ -33,10 +37,10 @@ const changePassword = () => {
 		console.log('Editting')
 		console.log('Values: ', values)
 		// cal api change password
-		const result = updateMe({
-			password: values.oldPassword,
-			new_password: values.newPassword,
-		}).unwrap()
+		const result = resetPassword({
+			username: username,
+			password: values.newPassword,
+		})
 
 		console.log('Result after update: ', result)
 		router.back()

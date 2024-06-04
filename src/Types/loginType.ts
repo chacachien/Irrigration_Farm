@@ -1,9 +1,5 @@
 export interface LoginForm{
-    value: string
+    username: string
     password: string
 }
 
-export interface Credentials {
-    user: string
-    token: string
-}

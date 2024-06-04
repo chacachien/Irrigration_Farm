@@ -87,5 +87,10 @@ declare module 'react-native-form-select-picker' {
 		static Item: typeof SelectPickerItem
 	}
 }
+declare module 'react-native-remote-svg'{
+	import React from 'react'
+	import { ImageProps } from 'react-native'
+	const content: React.FC<ImageProps>
+	export default content
+}
 
-declare module 'react-native-remote-svg'

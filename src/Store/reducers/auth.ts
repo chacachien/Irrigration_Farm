@@ -10,7 +10,6 @@ const slice = createSlice({
 		token: null | string
 	},
 	reducers: {
-
 		setCredentials(state, action: PayloadAction<{ user: any; token: string }>) {
 			// await AsyncStorage.setItem(
 			// 	'user',
@@ -33,7 +32,7 @@ export const saveCredentials = (user: any, token: string) => async (dispatch: Ap
 	await AsyncStorage.setItem(
 		'user',
 		JSON.stringify({
-			name: user,
+			name: user.username,
 			token,
 		}),
 	)

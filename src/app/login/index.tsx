@@ -43,23 +43,18 @@ export default function Login() {
 		}
 		try {
 			const result: any = await login({
-				value: email.value,
-				password: password.value,
+				username: email.value,
+				password: password.value
 			}).unwrap()
-			console.log('RESULT: ', result)
 
 			if (result) {
-				console.log('RESPONSE OF LOGIN: ', result)
-				//dispatch(setCredentials(result))
 				const { user, token } = result
 				await dispatch(saveCredentials(user, token))
 				router.push('(tabs)')
 			} else {
-				console.log('ERROR: ', result.error)
 				setPopupVisible(true)
 			}
 		} catch (err) {
-			console.log('ERR: ', err)
 			setPopupVisible(true)
 		}
 	}
@@ -88,7 +83,7 @@ export default function Login() {
 			<View style={styles.inputContainer}>
 				{type_res ? (
 					<TextInput
-						label="Email"
+						label="Email hoặc username"
 						returnKeyType="next"
 						value={email.value}
 						onChangeText={(text) => setEmail({ value: text, error: '' })}

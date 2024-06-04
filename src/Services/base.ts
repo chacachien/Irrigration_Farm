@@ -5,6 +5,7 @@ import { getToken } from '@/Helper/utils'
 // ad prepare header
 
 // const baseQuery = fetchBaseQuery({ baseUrl: Config.API_URL })
+console.log('API_URL: ', Config.API_URL)
 const baseQuery = fetchBaseQuery({
 	baseUrl: Config.API_URL,
 	prepareHeaders: async (headers, { getState }) => {

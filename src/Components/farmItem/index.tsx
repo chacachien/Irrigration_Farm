@@ -17,7 +17,11 @@ const FarmItem: React.FC<FarmItemProps> = ({ name, type, icon, onPress, onWeathe
 			<View style={styles.container}>
 				<View style={styles.iconWrap}>
 					{/* <Image style={styles.icon} source={require('../../../assets/icons/coconut.svg')} /> */}
-					<Image source={iconMap[icon]} style={styles.icon} />
+					{/* <Image source={iconMap[icon]} style={styles.icon} /> */}
+					<Image
+						source={{ uri: 'https://cdn-icons-png.flaticon.com/128/590/590772.png' }}
+						style={styles.icon}
+					/>
 				</View>
 				<View style={styles.infoContainer}>
 					<Text style={styles.name}>{name}</Text>
@@ -26,7 +30,7 @@ const FarmItem: React.FC<FarmItemProps> = ({ name, type, icon, onPress, onWeathe
 				<View style={styles.waterContainer}>
 					<Text style={{ color: 'grey', fontSize: 15, fontStyle: 'italic' }}>
 						{' '}
-						<Ionicons name="water-outline" size={16} color={'#2F90FF'} /> 
+						<Ionicons name="water-outline" size={16} color={'#2F90FF'} />
 						{<Text style={{ color: 'black', fontSize: 18, fontStyle: 'normal' }}>39%</Text>}
 					</Text>
 

@@ -6,7 +6,7 @@ export const scriptApis = API.injectEndpoints({
 		getScripts: build.query({
 			// add query params
 			query: () => ({
-				url: `/farms/scripts`,
+				url: `/models`,
 				method: 'GET',
 			}),
 		}),
