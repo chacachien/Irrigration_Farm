@@ -8,9 +8,10 @@ import theme from '@/Theme'
 
 // DATA
 import { FormikProps, FormikValues } from 'formik'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { options } from '@/Types/plantation'
 import { useGetCultivarsQuery } from '@/Services/cultivar'
+import { setFarmInput } from '@/Store/reducers/farm'
 
 type Props = {
 	form: FormikProps<FormikValues>
@@ -18,13 +19,14 @@ type Props = {
 }
 
 
+
 const SecondStep = ({ form, name }: Props) => {
 	const plantation = useSelector((state: any) => state.farm.plantation)
-	const [selected, setSelected] = useState(plantation)
+	const [selected, setSelected] = useState(plantation?.id || '')
 	console.log('plantation: ', plantation)
 	const { data, error, isLoading, refetch } = useGetCultivarsQuery({})
 	console.log('data', data)
-
+	const dispatch = useDispatch()
 
 	return (
 		<View style={styles.container}>
@@ -32,12 +34,22 @@ const SecondStep = ({ form, name }: Props) => {
 			<SelectPicker 
 				{...getInputProps('plantation', form)}
 				placeholder="Ấn để chọn"
-				onValueChange={(val) => {
+				onValueChange={(id) => {
+					if (!id) {
+						setSelected('')
+						form.setFieldValue('plantation', {})
+						return
+					}
 					// Do anything you want with the value.
 					// For example, save in state.
-					console.log('Selected value:', val)
-					form.setFieldValue('plantation', val)
-					setSelected(val)
+					console.log('Selected value:', id)
+					// const val = data.filter((item: any) => item.id === id)
+					form.setFieldValue('plantation', data.filter((item: any) => item.id === id)[0])
+					setSelected(id)
+					dispatch(setFarmInput({
+						plantation: data.filter((item: any) => item.id === id)[0]
+					})
+					)
 				}}
 				selected={selected}
 				value={form.values.plantation}

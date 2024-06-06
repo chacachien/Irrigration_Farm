@@ -18,8 +18,9 @@ type Props = {
 const FifthStep = ({ form, name }: Props) => {
 	const farm = useSelector((state: any) => state.farm)
 	const [modalVisible, setModalVisible] = useState(false)
-	const { data, isFetching, isLoading } = useGetScriptsQuery({})
 	const dispatch = useDispatch()
+	const { data, isFetching, isLoading } = useGetScriptsQuery({})
+
 
 	// useEffect(() => {
 	// 	form.values.scripts =
@@ -33,11 +34,18 @@ const FifthStep = ({ form, name }: Props) => {
 	}, [])
 	const handlePress = () => {
 		setModalVisible(true)
-		// fake wait 2s and
+
+		// wait to get data successfull
+
+		while(isLoading || isFetching) {
+			console.log('loading...')
+		}
 
 		console.log('data: ', data)
 
-		dispatch(setFarmInput(data))
+		dispatch(setFarmInput({
+			scripts: data
+	}))
 		console.log('form: ', form.values)
 		setModalVisible(false)
 		dispatch(increaseFarmStep())

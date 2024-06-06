@@ -55,7 +55,7 @@ const EditFarmDetailsScreen = () => {
 			// Handle form submission
 			// For example, save the changes and navigate back
 			console.log(values)
-			router.back()
+			router.replace('../')
 		},
 	})
 

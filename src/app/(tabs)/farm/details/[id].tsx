@@ -5,9 +5,10 @@ import theme from '@/Theme'
 import ActivateButton from '@/Components/button/activateButton'
 import DataTableIrrigation from '@/Components/dataTable'
 import DetailRow from '@/Components/detailRow'
+import DeleteButton from '@/Components/button/deleteButton'
 
 // DATA
-import { Stack, router, useLocalSearchParams } from 'expo-router'
+import { Stack, useRouter, useLocalSearchParams } from 'expo-router'
 import { useGetFarmQuery } from '@/Services/farm'
 import { formatDate } from '@/Helper/utils'
 import { options } from '@/Types/plantation'
@@ -15,16 +16,27 @@ import { setFarmInput } from '@/Store/reducers'
 import { useDispatch } from 'react-redux'
 import { useFocusEffect } from '@react-navigation/native'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
+import { useGetScenariosQuery } from '@/Services/scenario'
+import { useDeleteFarmMutation } from '@/Services/farm'
+import { CommonActions } from '@react-navigation/native'
 
 const FarmDetail: React.FC = () => {
 	const { id } = useLocalSearchParams()
-	const { data, isFetching, isLoading, refetch } = useGetFarmQuery({ id: id?.toString() })
+	const { data: farmData, isFetching, isLoading, refetch } = useGetFarmQuery(id?.toString())
+	const {
+		data: scenariosData,
+		isFetching: scenarioFetching,
+		isLoading: scenarioLoading,
+	} = useGetScenariosQuery({})
+	const [deleteFarm] = useDeleteFarmMutation()
+	console.log('Scenarios: ', scenariosData)
 	const dispatch = useDispatch()
 	useFocusEffect(
 		useCallback(() => {
 			refetch()
 		}, [refetch]),
 	)
+	const router = useRouter()
 
 	if (isFetching || isLoading) {
 		return (
@@ -33,43 +45,66 @@ const FarmDetail: React.FC = () => {
 			</View>
 		)
 	}
-	const farmDetail = data?.farms[0]
 
-	const script = JSON.parse(farmDetail?.script, (key, value) => {
-		return value
-	})
-
-	if (!farmDetail) {
+	if (!farmData) {
 		return (
 			<View>
 				<Text>Not found</Text>
 			</View>
 		)
 	}
-	console.log('Farm detail: ', farmDetail)
+	console.log('Farm detail: ', farmData)
+	// const handleEdit = (id: string) => {
+	// 	console.log('Edit farm with id: ', id)
+
+	// 	dispatch(
+	// 		setFarmInput({
+	// 			name: farmDetail.name,
+	// 			address: farmDetail.address,
+	// 			area: farmDetail.area,
+	// 			plantation: farmDetail.type,
+	// 			accepted_script: script,
+	// 			edit: true,
+	// 			id: id,
+	// 		}),
+	// 	)
+	// 	router.push({
+	// 		pathname: './(newFarm)',
+	// 	})
+	// }
 	const handleEdit = (id: string) => {
+
 		console.log('Edit farm with id: ', id)
 
 		dispatch(
 			setFarmInput({
-				name: farmDetail.name,
-				address: farmDetail.address,
-				area: farmDetail.area,
-				plantation: farmDetail.type,
-				accepted_script: script,
+				name: farmData.name,
+				des: farmData.description,
+				address: farmData.address,
+				plantation: farmData.cultivar,
+				accepted_script: farmData.model,
 				edit: true,
 				id: id,
 			}),
 		)
-		router.push({
-			pathname: './(newFarm)',
+		router.replace({
+			pathname: '../(newFarm)',
 		})
 	}
 
+	const handleDelete = async (id: string) => {
+		console.log('Delete farm with id: ', id)
+
+		//const result = await deleteFarm(id).unwrap()
+		// console.log('Delete result: ', result)
+		router.back()
+	}
+	const scriptOfFarm = scenariosData?.filter((script: any) => script.farm?.id == farmData.id)
+
+	console.log('Script of farm: ', scriptOfFarm)
 	return (
 		<>
 			<Stack.Screen
-
 				// Add the correct type definition for the headerLeft prop
 				options={{
 					headerLeft: () => (
@@ -85,7 +120,7 @@ const FarmDetail: React.FC = () => {
 				</View>
 				<View style={styles.farmDetailContainer}>
 					<View style={styles.infoTitle}>
-						<Text style={styles.name}>{farmDetail.name}</Text>
+						<Text style={styles.name}>{farmData.name}</Text>
 					</View>
 					<ScrollView
 						style={styles.scroll}
@@ -100,19 +135,21 @@ const FarmDetail: React.FC = () => {
 						<Text style={styles.details}>Diện tích: {farmDetail.area}</Text>
 						<Text style={styles.details}>Địa chỉ: {farmDetail.address}</Text>
 						<Text style={styles.details}>Kịch bản tưới: {script.script_source.model_name}</Text> */}
-							<DetailRow label="Ngày trồng" value={formatDate(farmDetail.created_at)} />
-							<DetailRow
-								label="Loại cây"
-								value={options.find((option) => option.value == farmDetail.type)?.label as string}
-							/>
-							<DetailRow label="Diện tích" value={farmDetail.area} />
-							<DetailRow label="Địa chỉ" value={farmDetail.address} />
-							<DetailRow label="Kịch bản tưới" value={script.script_source.model_name} />
+							<DetailRow label="Ngày trồng" value={formatDate(farmData.createdAt)} />
+							<DetailRow label="Loại cây" value={farmData?.cultivar.name} />
+							<DetailRow label="Địa chỉ" value={farmData.address} />
+							<DetailRow label="Mô tả" value={farmData.description} />
+							<DetailRow label="Kịch bản tưới" value={farmData.model.name} />
 						</View>
 						<Text style={styles.footer}>Lịch tưới</Text>
-						<DataTableIrrigation script={script.irrigation_schedule.irrigation_instructions} />
+						{scriptOfFarm && scriptOfFarm.length > 0 && (
+							<DataTableIrrigation script={scriptOfFarm} />
+						)}
 						<View style={styles.buttonContainer}>
-							<ActivateButton text="Chỉnh sửa" onPress={() => handleEdit(farmDetail.id)} />
+							<ActivateButton text="Chỉnh sửa" onPress={() => handleEdit(farmData.id)} />
+						</View>
+						<View style={styles.buttonContainer}>
+							<DeleteButton text="Xoá nông trại" onPress={() => handleDelete(farmData.id)} />
 						</View>
 					</ScrollView>
 				</View>

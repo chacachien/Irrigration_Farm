@@ -5,89 +5,111 @@ import theme from '@/Theme'
 import { DataTable } from 'react-native-paper'
 
 // DATA
-import { useSelector,useDispatch } from 'react-redux'
-import {IrrigationSchedule, Script} from '@/Types/script'
-import {FormikProps, FormikValues} from 'formik'
+import { useSelector, useDispatch } from 'react-redux'
+import { IrrigationSchedule, Script } from '@/Types/script'
+import { FormikProps, FormikValues } from 'formik'
 import { increaseFarmStep, setAcceptedScript } from '@/Store/reducers'
 import { getInputProps } from '@/Helper/utils'
 
-
 type Props = {
 	form: FormikProps<FormikValues>
-	name: string 
+	name: string
 }
-
 
 const SixthStep = ({ form, name }: Props) => {
 	name = 'sixthStep'
 	const scripts = useSelector((state: any) => state.farm.scripts)
-	const [selectedScript, setSelectedScript] = useState<Script | null>(null)
+	const [selectedScript, setSelectedScript] = useState<any | null>(null)
 	const [isEditable, setIsEditable] = useState(false)
 	const [editedData, setEditedData] = useState<any>(null)
 	const dispatch = useDispatch()
 
-
-	const renderItem = ({ item }:any) => (
+	// const renderItem = ({ item }: any) => (
+	// 	<TouchableOpacity
+	// 		onPress={() => {
+	// 			setSelectedScript(item)
+	// 			//setEditedData(item.irrigation_schedule.irrigation_instructions)
+	// 			dispatch(setAcceptedScript(item))
+	// 			dispatch(increaseFarmStep())
+	// 		}}
+	// 	>
+	// 		<View style={styles.itemContainer}>
+	// 			<Text style={styles.itemText}>Model Name: {item.script_source.model_name}</Text>
+	// 			<Text style={styles.itemText}>Crop Type: {item.irrigation_schedule.crop_type}</Text>
+	// 			<Text style={styles.itemText}>Date: {item.irrigation_schedule.date}</Text>
+	// 		</View>
+	// 	</TouchableOpacity>
+	// )
+	console.log('scripts:', scripts)
+	const renderItem = ({ item }: any) => (
 		<TouchableOpacity
 			onPress={() => {
 				setSelectedScript(item)
-				setEditedData(item.irrigation_schedule.irrigation_instructions)
+				//setEditedData(item.irrigation_schedule.irrigation_instructions)
+				dispatch(setAcceptedScript(item))
+				dispatch(increaseFarmStep())
 			}}
 		>
 			<View style={styles.itemContainer}>
-				<Text style={styles.itemText}>Model Name: {item.script_source.model_name}</Text>
-				<Text style={styles.itemText}>Crop Type: {item.irrigation_schedule.crop_type}</Text>
-				<Text style={styles.itemText}>Date: {item.irrigation_schedule.date}</Text>
+				<Text style={styles.itemText}>Tên mô hình: {item.name}</Text>
+				<Text style={styles.itemText}>Nhà cung cấp: {item.provider}</Text>
+				<Text style={styles.itemText}>Ngày tạo: {item.updatedAt}</Text>
 			</View>
 		</TouchableOpacity>
 	)
 
-	const handleEditToggle = () => {
-		setIsEditable(!isEditable)
-	}
 
-const handleInputChange = (value: string, rowIndex: number, field: string) => {
-	console.log(`value: ${value}, rowIndex: ${rowIndex}, field: ${field}`)
-	let newData = [...editedData]
-	newData[rowIndex] = { ...newData[rowIndex], [field]: value }
-	setEditedData(newData)
-	form.setFieldValue('irrigation_instructions', newData)
-}
-const handleSubmit = () => {
+	// OLD VERSION
+	// const handleEditToggle = () => {
+	// 	setIsEditable(!isEditable)
+	// }
 
-	const updateIrrigationSchedule = {
-		...selectedScript?.irrigation_schedule,
-		irrigation_instructions: editedData
-	} as IrrigationSchedule
-	console.log('updateIrrigationSchedule:', updateIrrigationSchedule)
+	// const handleInputChange = (value: string, rowIndex: number, field: string) => {
+	// 	console.log(`value: ${value}, rowIndex: ${rowIndex}, field: ${field}`)
+	// 	let newData = [...editedData]
+	// 	newData[rowIndex] = { ...newData[rowIndex], [field]: value }
+	// 	setEditedData(newData)
+	// 	form.setFieldValue('irrigation_instructions', newData)
+	// }
+	// const handleSubmit = () => {
+	// 	const updateIrrigationSchedule = {
+	// 		...selectedScript?.irrigation_schedule,
+	// 		irrigation_instructions: editedData,
+	// 	} as IrrigationSchedule
+	// 	console.log('updateIrrigationSchedule:', updateIrrigationSchedule)
+
+	// 	console.log('selectedScript:', selectedScript)
+	// 	const updatedScript = {
+	// 		script_source: selectedScript?.script_source || {
+	// 			source_category: '',
+	// 			source_type: '',
+	// 			model_name: '',
+	// 			training_data: '',
+	// 			created_by: '',
+	// 		},
+	// 		irrigation_schedule: updateIrrigationSchedule,
+	// 	}
+
+	// 	// Update the selectedScript state with the new Script object
+	// 	setSelectedScript(updatedScript)
+	// 	dispatch(setAcceptedScript(updatedScript))
+	// 	console.log('updatedScript:', selectedScript)
+	// 	dispatch(increaseFarmStep())
+	// }
+	// useEffect(() => {
+	// 	// set value for formik
+	// 	form.setFieldValue(
+	// 		'irrigation_instructions',
+	// 		scripts[0].irrigation_schedule.irrigation_instructions,
+	// 	)
+	// 	console.log('form selected script:', form)
+	// }, [selectedScript])
 
 
-	console.log('selectedScript:', selectedScript)
-	const updatedScript = {
-		script_source: selectedScript?.script_source || {
-			source_category: '',
-			source_type: '',
-			model_name: '',
-			training_data: '',
-			created_by: '',
-		},
-		irrigation_schedule: updateIrrigationSchedule,
-	}
+	// new version
 
-	// Update the selectedScript state with the new Script object
-	setSelectedScript(updatedScript)
-	dispatch(setAcceptedScript(updatedScript))
-	console.log('updatedScript:', selectedScript)
-	dispatch(increaseFarmStep())
-}
-useEffect(() => {
-	// set value for formik
-	form.setFieldValue('irrigation_instructions', scripts[0].irrigation_schedule.irrigation_instructions)
-	console.log('form selected script:', form)
-}
-, [selectedScript])
 
-const {isValid, values, setFieldValue} = form
+	const { isValid, values, setFieldValue } = form
 	return (
 		<View style={styles.container}>
 			<FlatList
@@ -95,7 +117,7 @@ const {isValid, values, setFieldValue} = form
 				keyExtractor={(item, index) => index.toString()}
 				renderItem={renderItem}
 			/>
-			{selectedScript && (
+			{/* {selectedScript && (
 				<Modal
 					animationType="slide"
 					transparent={true}
@@ -160,7 +182,7 @@ const {isValid, values, setFieldValue} = form
 
 							{/* <Button title={isEditable ? 'Xác nhận' : 'Chỉnh sửa'} onPress={handleEditToggle} /> */}
 
-							<TouchableOpacity
+			{/* <TouchableOpacity
 								style={[
 									styles.button,
 									{ backgroundColor: isValid ? theme.Colors.PRIMARY_LIGHT : '#D3D3D3' },
@@ -185,8 +207,7 @@ const {isValid, values, setFieldValue} = form
 							</View>
 						</View>
 					</View>
-				</Modal>
-			)}
+				</Modal>  */}
 		</View>
 	)
 }
@@ -197,6 +218,7 @@ const styles = StyleSheet.create({
 		padding: 16,
 		backgroundColor: '#f5f5f5',
 	},
+
 	itemContainer: {
 		backgroundColor: '#fff',
 		padding: 16,

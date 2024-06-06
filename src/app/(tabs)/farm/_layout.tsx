@@ -9,18 +9,12 @@ export default function FarmLayout() {
 	return (
 		<Stack
 			screenOptions={{
-				// custom button back on header
-				// headerLeft: () => (
-				// 	<TouchableOpacity onPress={() => router.back()}>
-				// 		<FontAwesome name="angle-left" size={30} color="#000" />
-				// 	</TouchableOpacity>
-				// ),
 			}}
 		>
-			<Stack.Screen name="index" options={{ title: 'Nông trại', headerTitleAlign: 'center' }} />
+			<Stack.Screen  name="index" options={{ title: 'Nông trại', headerTitleAlign: 'center' }}  />
 			<Stack.Screen name="weather" options={{ title: 'Thời tiết', headerTitleAlign: 'center' }} />
 			<Stack.Screen
-				name="[id]"
+				name="details/[id]"
 				options={{
 					title: 'Nông trại',
 					headerTitleAlign: 'center',

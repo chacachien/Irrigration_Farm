@@ -10,14 +10,24 @@ import { useRouter } from 'expo-router'
 import { Formik, FormikProps, FormikValues } from 'formik'
 import { useSelector, useDispatch } from 'react-redux'
 import { genarateSteps, getStepSchema } from './steps/index'
-import { setFarmInput, increaseFarmStep, decreaseFarmStep, restartFarmStep, clearFarmInput } from '@/Store/reducers'
+import {
+	setFarmInput,
+	increaseFarmStep,
+	decreaseFarmStep,
+	restartFarmStep,
+	clearFarmInput,
+} from '@/Store/reducers'
 import { useCreateFarmMutation, useUpdateFarmMutation } from '@/Services/farm'
-
 
 const popupcontent = {
 	success: {
 		title: 'success',
 		content: 'Tạo nông trại thành công',
+		button: 'Tiếp tục',
+	},
+	updateSuccess: {
+		title: 'success',
+		content: 'Cập nhật nông trại thành công',
 		button: 'Tiếp tục',
 	},
 	fail: {
@@ -38,55 +48,70 @@ export default function NewFarmLayout() {
 	const [updateFarm, updateFarmResult] = useUpdateFarmMutation()
 	const [popupText, setPopupText] = useState(popupcontent.success)
 
-
 	const handleSubmit = async (form: any) => {
+		// const farmSubmit = {
+		// 	name: farm.name,
+		// 	address: farm.address,
+		// 	area: farm.area,
+		// 	type: farm.plantation,
+		// 	script: JSON.stringify(farm.accepted_script),
+
+		// }
 		const farmSubmit = {
 			name: farm.name,
+			description: farm.des,
 			address: farm.address,
-			area: farm.area,
-			type: farm.plantation,
-			script: JSON.stringify(farm.accepted_script),
-
+			image: 'Farm Image URL',
+			cultivarId: farm.plantation.id,
+			modelId: farm.accepted_script.id,
 		}
-		if (farm.edit) {
-			const edit_farm = {
-				id: farm.id,
-				...farmSubmit
-			}
-			console.log('edit_farm: ', edit_farm)
-			console.log("form: ", form)
-			
-			const response = await updateFarm(edit_farm)
-			console.log('response: ', response)
-			form.setSubmitting(false)
-			if (response.data) {
-				console.log('Cập nhật nông trại thành công: ', response.data)
-				setPopupText(popupcontent.success)
-				setPopupVisible(true)
-				dispatch(clearFarmInput())
-				router.replace({ pathname: `/(tabs)/farm/${response.data.id}`})
-			} else {
-				console.log('Cập nhật nông trại thất bại: ', response.error)
-				setPopupText(popupcontent.fail)
-				setPopupVisible(true)
-			}
-		}
-		else{
+		try {
+			if (farm.edit) {
+				const edit_farm = {
+					id: farm.id,
+					name: farm.name,
+					description: farm.des,
+					address: farm.address,
+					image: 'Farm Image URL',
 
-			const response = await postFarm(farmSubmit)
-			console.log('response: ', response)
-			form.setSubmitting(false)
-			if (response.data) {
-				console.log('Tạo nông trại thành công: ', response.data)
-				setPopupText(popupcontent.success)
-				setPopupVisible(true)
-				dispatch(clearFarmInput())
-				router.back()
+				}
+				console.log('edit_farm: ', edit_farm)
+				console.log('form: ', form)
+
+				const response = await updateFarm(edit_farm).unwrap()
+				console.log('response: ', response)
+				form.setSubmitting(false)
+				if (response) {
+					console.log('Cập nhật nông trại thành công: ', response)
+					setPopupText(popupcontent.updateSuccess)
+					setPopupVisible(true)
+					router.replace({ pathname: `/(tabs)/farm/details/${response.id}` })
+					dispatch(clearFarmInput())
+				} else {
+					console.log('Cập nhật nông trại thất bại: ', response.error)
+					setPopupText(popupcontent.fail)
+					setPopupVisible(true)
+				}
 			} else {
-				console.log('Tạo nông trại thất bại: ', response.error)
-				setPopupText(popupcontent.fail)
-				setPopupVisible(true)
+				const response = await postFarm(farmSubmit)
+				console.log('response: ', response)
+				form.setSubmitting(false)
+				if (response.data) {
+					console.log('Tạo nông trại thành công: ', response.data)
+					setPopupText(popupcontent.success)
+					setPopupVisible(true)
+					dispatch(clearFarmInput())
+					router.back()
+				} else {
+					console.log('Tạo nông trại thất bại: ', response.error)
+					setPopupText(popupcontent.fail)
+					setPopupVisible(true)
+				}
 			}
+		} catch (err) {
+			console.log('err: ', err)
+			setPopupText(popupcontent.fail)
+			setPopupVisible(true)
 		}
 	}
 	const renderCurrentStep = (form: FormikProps<FormikValues>) => {
@@ -121,20 +146,21 @@ export default function NewFarmLayout() {
 		setPopupVisible(false)
 		if (popupText.title === 'success') {
 			dispatch(clearFarmInput())
+			router.replace('(tabs)/farm')
 		} else {
 			dispatch(restartFarmStep())
 		}
-		router.back() 
+
 	}
-
-
 	return (
 		<View style={styles.container}>
 			<View style={styles.inputContainer}>
 				<Formik
 					initialValues={{}} // this is the initial values of the form
 					validationSchema={getStepSchema(currentIndex, steps)}
-					onSubmit={()=> {console.log('submit')}}
+					onSubmit={() => {
+						console.log('submit')
+					}}
 					validateOnBlur
 					validateOnChange
 					validateOnMount

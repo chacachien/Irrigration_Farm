@@ -97,11 +97,11 @@ function RootLayout() {
 	React.useEffect(() => {
 		// Determine the initial route based on onboarding and login status
 		if (!onboarding) {
-			router.push('onboard')
+			router.replace('onboard')
 		} else if (!token) {
-			router.push('login')
+			router.replace('login')
 		} else {
-			router.push('(tabs)')
+			router.replace('(tabs)')
 		}
 	}, [onboarding, token, router])
 

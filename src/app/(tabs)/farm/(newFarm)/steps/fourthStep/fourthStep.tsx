@@ -20,7 +20,7 @@ const FourthStep = ({ form, name }: Props) => {
 	useEffect(() => {
 		// Set the initial value for 'area' to 'area' if not already set
 		if (form.values.des !== des) {
-			setFieldValue('area', des)
+			setFieldValue('des', des)
 		}
 	}, [])
 

@@ -1,13 +1,124 @@
-GET https://tuoitieu.hpcc.vn/models
+GET https://tuoitieu.hpcc.vn/users
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VyX2VmNDI2NjZlLWQ5YzAtNDVmMS04MmMxLTViMTYzZTIzOGJmOSIsImlhdCI6MTcxNzQxMTAyMH0.5_4_1SMQSfZSJKnNNBox0RvJPHc5l2D1NFkLXW547xc
 
-FARM
+
+###
+POST https://tuoitieu.hpcc.vn/auth/password/reset
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VyX2VmNDI2NjZlLWQ5YzAtNDVmMS04MmMxLTViMTYzZTIzOGJmOSIsImlhdCI6MTcxNzYxMzM1MX0.D95P2CsMSuKmDHMXq390XEXQrtGQbTmFZkfYRjvLQew
+
+{
+  "username": "sample.user",
+  "password": "aaaaaa"
+}
+
+### 
+POST https://tuoitieu.hpcc.vn/auth/login
+Content-Type: application/json
+
+    {
+        "username": "sample.user",
+        "password": "aaaaaa"
+    }
+
+###
+GET https://tuoitieu.hpcc.vn/models
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VyX2VmNDI2NjZlLWQ5YzAtNDVmMS04MmMxLTViMTYzZTIzOGJmOSIsImlhdCI6MTcxNzYxMzM1MX0.D95P2CsMSuKmDHMXq390XEXQrtGQbTmFZkfYRjvLQew
+
+
+###
+###
+GET https://tuoitieu.hpcc.vn/scenarios
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VyX2VmNDI2NjZlLWQ5YzAtNDVmMS04MmMxLTViMTYzZTIzOGJmOSIsImlhdCI6MTcxNzYxMzM1MX0.D95P2CsMSuKmDHMXq390XEXQrtGQbTmFZkfYRjvLQew
+
+
+###
+###
+POST https://tuoitieu.hpcc.vn/scenarios
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VyX2VmNDI2NjZlLWQ5YzAtNDVmMS04MmMxLTViMTYzZTIzOGJmOSIsImlhdCI6MTcxNzYxMzM1MX0.D95P2CsMSuKmDHMXq390XEXQrtGQbTmFZkfYRjvLQew
+Content-Type: application/json
+
+    {
+        "name": "string",
+        "model": "models_ea1e71b2-2617-49f9-87ee-d68bc81d43e0",
+        "farm": "farm_2149ec83-d01b-442e-a342-2b617f303680",
+        "time": "2021-12-01T00:00:00.000Z",
+        "duration": 10,
+        "amount": 100
+    }
+
+###
+###
+PATCH  https://tuoitieu.hpcc.vn/scenarios/scenario_0158433c-c9a6-4116-a404-797f5896823b
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VyX2VmNDI2NjZlLWQ5YzAtNDVmMS04MmMxLTViMTYzZTIzOGJmOSIsImlhdCI6MTcxNzYxMzM1MX0.D95P2CsMSuKmDHMXq390XEXQrtGQbTmFZkfYRjvLQew
+Content-Type: application/json
+
+    {
+        "model": "models_ea1e71b2-2617-49f9-87ee-d68bc81d43e0",
+        "farm": "farm_2149ec83-d01b-442e-a342-2b617f303680"
+    }
+
 ###
 GET https://tuoitieu.hpcc.vn/farms
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VyX2VmNDI2NjZlLWQ5YzAtNDVmMS04MmMxLTViMTYzZTIzOGJmOSIsImlhdCI6MTcxNzQxMTAyMH0.5_4_1SMQSfZSJKnNNBox0RvJPHc5l2D1NFkLXW547xc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VyX2VmNDI2NjZlLWQ5YzAtNDVmMS04MmMxLTViMTYzZTIzOGJmOSIsImlhdCI6MTcxNzYxMzM1MX0.D95P2CsMSuKmDHMXq390XEXQrtGQbTmFZkfYRjvLQew
 
 ### 
 GET https://tuoitieu.hpcc.vn/farms/farm_06512824-9340-414c-bf5e-649eb973d5b1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VyX2VmNDI2NjZlLWQ5YzAtNDVmMS04MmMxLTViMTYzZTIzOGJmOSIsImlhdCI6MTcxNzQxMTAyMH0.5_4_1SMQSfZSJKnNNBox0RvJPHc5l2D1NFkLXW547xc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VyX2VmNDI2NjZlLWQ5YzAtNDVmMS04MmMxLTViMTYzZTIzOGJmOSIsImlhdCI6MTcxNzYxMzM1MX0.D95P2CsMSuKmDHMXq390XEXQrtGQbTmFZkfYRjvLQew
 
 ###
+GET  https://tuoitieu.hpcc.vn/news
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VyX2VmNDI2NjZlLWQ5YzAtNDVmMS04MmMxLTViMTYzZTIzOGJmOSIsImlhdCI6MTcxNzYxMzM1MX0.D95P2CsMSuKmDHMXq390XEXQrtGQbTmFZkfYRjvLQew
+
+
+###
+POST  https://tuoitieu.hpcc.vn/news
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VyX2VmNDI2NjZlLWQ5YzAtNDVmMS04MmMxLTViMTYzZTIzOGJmOSIsImlhdCI6MTcxNzYxMzM1MX0.D95P2CsMSuKmDHMXq390XEXQrtGQbTmFZkfYRjvLQew
+Content-Type: application/json
+    
+    {
+        "title": "Sầu riêng vào mùa",
+        "image": "assets/news/anh-4.jpg",
+        "link": "https://example.com/news",
+        "category": "Tin tức",
+        "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+    }
+
+###
+###
+PATCH  https://tuoitieu.hpcc.vn/news/news_edf7f8a6-93ad-4b33-8020-1c5999a150e5
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VyX2VmNDI2NjZlLWQ5YzAtNDVmMS04MmMxLTViMTYzZTIzOGJmOSIsImlhdCI6MTcxNzYxMzM1MX0.D95P2CsMSuKmDHMXq390XEXQrtGQbTmFZkfYRjvLQew
+Content-Type: application/json
+    
+    {
+        "image": "https://www.baokontum.com.vn/uploads/Image/2024/05/05/172122N%C3%B4ng%20d%C3%A2n%20huy%E1%BB%87n%20%C4%90%C4%83k%20T%C3%B4%20ph%E1%BA%A5n%20kh%E1%BB%9Fi%20v%C3%AC%20v%E1%BB%A5%20l%C3%BAa%20%C4%90%C3%B4ng%20Xu%C3%A2n%202023-2024%20%C4%91%C6%B0%E1%BB%A3c%20m%C3%B9a,%20%C4%91%C6%B0%E1%BB%A3c%20gi%C3%A1.jpg",
+        "link": "https://vnexpress.net/thanh-long-ruot-do-rot-gia-mot-nua-4673552.html"
+    }
+
+###
+POST https://tuoitieu.hpcc.vn/farms
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VyX2VmNDI2NjZlLWQ5YzAtNDVmMS04MmMxLTViMTYzZTIzOGJmOSIsImlhdCI6MTcxNzYxMzM1MX0.D95P2CsMSuKmDHMXq390XEXQrtGQbTmFZkfYRjvLQew
+Content-Type: application/json
+
+    {
+    "name": "Farm Name",
+    "description": "AaaA",
+    "address": "Aaa",
+    "image": "Farm Image URL",
+    "cultivarId": "cultivar_8bf3fb59-e45c-4f9d-96a7-5c1276a86175",
+    "modelId": "Model ID"
+    }
+
+###
+PATCH https://tuoitieu.hpcc.vn/farms/farm_06512824-9340-414c-bf5e-649eb973d5b1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VyX2VmNDI2NjZlLWQ5YzAtNDVmMS04MmMxLTViMTYzZTIzOGJmOSIsImlhdCI6MTcxNzYxMzM1MX0.D95P2CsMSuKmDHMXq390XEXQrtGQbTmFZkfYRjvLQew
+Content-Type: application/json
+
+{
+"address": "Lohe", 
+"cultivarId": "cultivar_8bf3fb59-e45c-4f9d-96a7-5c1276a86175", 
+"description": "hong co", 
+"id": "farm_2149ec83-d01b-442e-a342-2b617f303680", 
+"image": "Farm Image URL", 
+"modelId": "models_ea1e71b2-2617-49f9-87ee-d68bc81d43e0", 
+"name": "Heloaa"
+}

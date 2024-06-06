@@ -1,29 +1,29 @@
 {
-  "project_info": {
-    "project_number": "623973796294",
-    "project_id": "alert-c536b",
-    "storage_bucket": "alert-c536b.appspot.com"
-  },
-  "client": [
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:623973796294:android:ba69109dbab5e4280e0ac7",
-        "android_client_info": {
-          "package_name": "com.chacachien.template"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAZa-L7RoZIoNUI6I3TDEx_NIHfxRaGEb8"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    }
-  ],
-  "configuration_version": "1"
+	"project_info": {
+		"project_number": "883641316727",
+		"project_id": "reminder-71ee0",
+		"storage_bucket": "reminder-71ee0.appspot.com"
+	},
+	"client": [
+		{
+			"client_info": {
+				"mobilesdk_app_id": "1:883641316727:android:5a3bba0e65d07d9d745d72",
+				"android_client_info": {
+					"package_name": "com.chacachien.template"
+				}
+			},
+			"oauth_client": [],
+			"api_key": [
+				{
+					"current_key": "AIzaSyBz3LBwIYup8Ttkzx6ZLSDkTtAEFmufKOA"
+				}
+			],
+			"services": {
+				"appinvite_service": {
+					"other_platform_oauth_client": []
+				}
+			}
+		}
+	],
+	"configuration_version": "1"
 }

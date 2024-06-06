@@ -46,24 +46,34 @@ export const farmApi = API.injectEndpoints({
 		}),
         getFarm: build.query({
             query: (id: any) => ({
-                url: `/farms/?farm_id=${id.id}`,
+                url: `/farms/${id}`,
                 method: 'GET',
             }),
         }),
 		// put method
 		updateFarm: build.mutation({
 			query: (body) => {
+				console.log('body', body)
 				return {
-					url: '/farms/',
-					method: 'PUT',
+					url: `/farms/${body.id}`,
+					method: 'PATCH',
 					body
 				}
 			}
 		}),
+		deleteFarm: build.mutation({
+			query: (id) => {
+				return {
+					url: `/farms/${id}`,
+					method: 'DELETE',
+				}
+			}
+		})
+
 
 	}),
 	overrideExisting: true,
 })
 
 
-export const { useCreateFarmMutation, useGetFarmsQuery, useGetFarmQuery, useUpdateFarmMutation} = farmApi
+export const { useCreateFarmMutation, useGetFarmsQuery, useGetFarmQuery, useUpdateFarmMutation, useDeleteFarmMutation} = farmApi

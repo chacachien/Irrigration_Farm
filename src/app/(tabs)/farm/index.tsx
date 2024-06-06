@@ -51,31 +51,28 @@ const Farm: React.FC = () => {
 	const dispatch = useDispatch()
 	const user = useSelector((state: any) => state.auth.user)
 	const { data, isFetching, isLoading, refetch } = useGetFarmsQuery({})
-	const [farm, setFarm] = React.useState([])
 	const [refreshing, setRefreshing] = React.useState(false)
-
-	console.log('data', data)	
+	let farm = data?.filter((item: any) => item.user.id === user.id)
 	const onRefresh = React.useCallback(async () => {
 		setRefreshing(true)
 		try {
 			await refetch() // Re-fetch the data
 			console.log('REFRESHING....')
 		} finally {
-			setFarm(data?.filter((item: any) => item.user.id === user.id))
 			setRefreshing(false)
 		}
 	}, [refetch])
 
 	useFocusEffect(
 		useCallback(() => {
+			console.log('FOCUS EFFECT')
 			refetch()
-			setFarm(data?.filter((item: any) => item.user.id === user.id))
 		}, [refetch]),
 	)
 
 	const handleLogout = () => {
 		dispatch(setLogout())
-		router.push('login')
+		router.replace('login')
 	}
 
 	const handleWeatherPress = (farmId: string) => {
@@ -85,7 +82,7 @@ const Farm: React.FC = () => {
 	}
 	const handlePress = (id: string) => {
 		console.log('Farm id: ', id)
-		router.push(`./farm/${id}`)
+		router.push(`./farm/details/${id}`)
 	}
 	const handleAddFarm = () => {
 		router.push('./farm/(newFarm)')
@@ -94,9 +91,7 @@ const Farm: React.FC = () => {
 		return <Text>Loading...</Text>
 	}
 	console.log('farm', farm)
-	useEffect(() => {
-		setFarm(data?.filter((item: any) => item.user.id === user.id))
-	}, [])
+
 
 	return (
 		<ScrollView

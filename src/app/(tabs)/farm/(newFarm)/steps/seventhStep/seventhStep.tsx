@@ -16,20 +16,23 @@ type Props = {
 }
 const SeventhStep = ({ form, name }: Props) => {
     const farm = useSelector((state: any) => state.farm)
-    const script = farm.accepted_script
+    // const script = farm.accepted_script
+	console.log('farm: ', farm)
 
     return (
 			<View style={styles.container}>
 				<DetailRow label="Tên nông trại" value={farm.name} />
 				<DetailRow label="Địa chỉ" value={farm.address} />
-				<DetailRow label="Diện tích" value={farm.area.toString()} />
+				<DetailRow label="Mô tả" value={farm.des} />
 				<DetailRow
 					label="Loại cây trồng"
-					value={options.find((option) => option.value === farm.plantation)?.label as string}
+					//value={options.find((option) => option.value === farm.plantation)?.name as string}
+					value = {farm.plantation.name}
 				/>
-				<DetailRow label="Kịch bản tưới" value={script.script_source.model_name} />
-				<DetailRow label="Ngày tưới" value={script.irrigation_schedule.date} />
-				<Text style={styles.label}>Hướng dẫn tưới:</Text>
+				<DetailRow label="Mô hình tưới" value={farm.accepted_script.name} />
+				{/* <DetailRow label="Kịch bản tưới" value={script.script_source.model_name} />
+				<DetailRow label="Ngày tưới" value={script.irrigation_schedule.date} /> */}
+				{/* <Text style={styles.label}>Hướng dẫn tưới:</Text>
 				<DataTable>
 					<DataTable.Header>
 						<DataTable.Title>Thời gian </DataTable.Title>
@@ -44,7 +47,7 @@ const SeventhStep = ({ form, name }: Props) => {
 							<DataTable.Cell {...getInputProps('water', form)}>{instruction.water_flow_rate}</DataTable.Cell>
 						</DataTable.Row>
 					))}
-				</DataTable>
+				</DataTable> */}
 			</View>
 		)
 };
